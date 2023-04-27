@@ -5,6 +5,15 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerStyles from "./burgerConstructor.module.css";
+import PropTypes from "prop-types";
+
+const burgerIngridientTypes = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+});
 
 const BurgerIngredient = ({ ingridient }) => {
   return (
@@ -16,6 +25,10 @@ const BurgerIngredient = ({ ingridient }) => {
       />
     </div>
   );
+};
+
+BurgerIngredient.propTypes = {
+  ingridient: burgerIngridientTypes.isRequired,
 };
 
 function BurgerConstructor({ ingridient }) {
@@ -58,7 +71,7 @@ function BurgerConstructor({ ingridient }) {
         />
       </div>
       <div className={`${burgerStyles.order} pt-5 pr-4`}>
-        <div className={`${burgerStyles.price}`}>
+        <div className={burgerStyles.price}>
           <p className="text text_type_digits-medium">610</p>
           <CurrencyIcon type="primary" />
         </div>
@@ -69,5 +82,9 @@ function BurgerConstructor({ ingridient }) {
     </div>
   );
 }
+
+BurgerConstructor.propTypes = {
+  array: PropTypes.func,
+};
 
 export default BurgerConstructor;

@@ -8,7 +8,7 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <main className={`${styles.main}`}>
+      <main className={styles.main}>
         <section className={styles.ingredients}>
           <h1 className="text text_type_main-large">Соберите бургер</h1>
           <BurgerIngredients ingredient={data} />

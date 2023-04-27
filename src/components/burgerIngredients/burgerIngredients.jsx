@@ -6,11 +6,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyles from "./burgerIngredients.module.css";
 import { data } from "../../utils/data";
+import {ingredientPropType} from "../../utils/prop-types.js";
+
 
 const IngridientItem = ({ ingridient }) => {
   return (
     <div className={ingredientsStyles.ingridient__item}>
-      <Counter className={ingredientsStyles.counter}/>
+      <Counter className={ingredientsStyles.counter} />
       <img src={ingridient.image} alt="фото." />
       <div className={`${ingredientsStyles.ingridient__price} pt-1 pb-1`}>
         <p className="text text_type_digits-default pr-2">{ingridient.price}</p>
@@ -25,6 +27,10 @@ const IngridientItem = ({ ingridient }) => {
   );
 };
 
+IngridientItem.propTypes = {
+  ingridient: ingredientPropType.isRequired,
+};
+
 function BurgerIngredients() {
   const [current, setCurrent] = useState("one");
   //нашла все булки
@@ -35,15 +41,15 @@ function BurgerIngredients() {
   const fillings = data.filter((m) => m.type === "main");
 
   const ref = useRef();
-   
-   //константа для хранения состояния выбранного таба и подключения скролла при клике
+
+  //константа для хранения состояния выбранного таба и подключения скролла при клике
   const tabStorage = (selectTab) => {
-		setCurrent(selectTab);
-    const item = document.getElementById(selectTab)
+    setCurrent(selectTab);
+    const item = document.getElementById(selectTab);
     if (item) {
-      return item.scrollIntoView({ behavior: "smooth" })
+      return item.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   return (
     <>
@@ -60,7 +66,7 @@ function BurgerIngredients() {
       </div>
       <div className={`${ingredientsStyles.ingridient__container} mt-5`}>
         <div className="pb-5">
-          <h2 className="text text_type_main-medium pb-1" id='one'ref={ref}>
+          <h2 className="text text_type_main-medium pb-1" id="one" ref={ref}>
             Булки
           </h2>
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
@@ -72,7 +78,7 @@ function BurgerIngredients() {
           </ul>
         </div>
         <div className="pt-5 pb-5">
-          <h2 className="text text_type_main-medium pb-1" id='two' ref={ref}>
+          <h2 className="text text_type_main-medium pb-1" id="two" ref={ref}>
             Соусы
           </h2>
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
@@ -84,7 +90,7 @@ function BurgerIngredients() {
           </ul>
         </div>
         <div className="pt-5 pb-5">
-          <h2 className="text text_type_main-medium pb-1" id='three' ref={ref}>
+          <h2 className="text text_type_main-medium pb-1" id="three" ref={ref}>
             Начинки
           </h2>
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>

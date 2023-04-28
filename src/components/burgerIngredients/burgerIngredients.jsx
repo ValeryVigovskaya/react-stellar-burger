@@ -1,44 +1,30 @@
-import { useRef, useState } from "react";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useRef, useState, useMemo } from "react";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyles from "./burgerIngredients.module.css";
-import { data } from "../../utils/data";
-import {ingredientPropType} from "../../utils/prop-types.js";
+import IngridientItem from "../ingridientItem/ingridientItem";
+import { ingredientPropType } from "../../utils/prop-types";
+import PropTypes from "prop-types";
 
-
-const IngridientItem = ({ ingridient }) => {
-  return (
-    <div className={ingredientsStyles.ingridient__item}>
-      <Counter className={ingredientsStyles.counter} />
-      <img src={ingridient.image} alt="фото." />
-      <div className={`${ingredientsStyles.ingridient__price} pt-1 pb-1`}>
-        <p className="text text_type_digits-default pr-2">{ingridient.price}</p>
-        <CurrencyIcon />
-      </div>
-      <p
-        className={`${ingredientsStyles.text__align} text text_type_main-default`}
-      >
-        {ingridient.name}
-      </p>
-    </div>
-  );
-};
-
-IngridientItem.propTypes = {
-  ingridient: ingredientPropType.isRequired,
-};
-
-function BurgerIngredients() {
+function BurgerIngredients({ ingridients }) {
   const [current, setCurrent] = useState("one");
+  const bun = "bun";
+  const sauce = "sauce";
+  const main = "main";
   //нашла все булки
-  const buns = data.filter((m) => m.type === "bun");
+  const buns = useMemo(
+    () => ingridients.filter((m) => m.type === bun),
+    [ingridients]
+  );
   //нашла все соусы
-  const sauces = data.filter((m) => m.type === "sauce");
+  const sauces = useMemo(
+    () => ingridients.filter((m) => m.type === sauce),
+    [ingridients]
+  );
   //нашла все начинки
-  const fillings = data.filter((m) => m.type === "main");
+  const fillings = useMemo(
+    () => ingridients.filter((m) => m.type === main),
+    [ingridients]
+  );
 
   const ref = useRef();
 
@@ -70,9 +56,9 @@ function BurgerIngredients() {
             Булки
           </h2>
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
-            {buns.map((ingridient) => (
-              <li key={ingridient._id}>
-                <IngridientItem ingridient={ingridient} />
+            {buns.map((ingridients) => (
+              <li key={ingridients._id}>
+                <IngridientItem ingridient={ingridients} />
               </li>
             ))}
           </ul>
@@ -82,9 +68,9 @@ function BurgerIngredients() {
             Соусы
           </h2>
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
-            {sauces.map((ingridient) => (
-              <li key={ingridient._id}>
-                <IngridientItem ingridient={ingridient} />
+            {sauces.map((ingridients) => (
+              <li key={ingridients._id}>
+                <IngridientItem ingridient={ingridients} />
               </li>
             ))}
           </ul>
@@ -94,9 +80,9 @@ function BurgerIngredients() {
             Начинки
           </h2>
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
-            {fillings.map((ingridient) => (
-              <li key={ingridient._id}>
-                <IngridientItem ingridient={ingridient} />
+            {fillings.map((ingridients) => (
+              <li key={ingridients._id}>
+                <IngridientItem ingridient={ingridients} />
               </li>
             ))}
           </ul>
@@ -105,5 +91,9 @@ function BurgerIngredients() {
     </>
   );
 }
+
+BurgerIngredients.propTypes = {
+  ingridients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+};
 
 export default BurgerIngredients;

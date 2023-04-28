@@ -11,10 +11,10 @@ function App() {
       <main className={styles.main}>
         <section className={styles.ingredients}>
           <h1 className="text text_type_main-large">Соберите бургер</h1>
-          <BurgerIngredients ingredient={data} />
+          <BurgerIngredients ingridients={data} />
         </section>
         <section className={styles.burger__constructor}>
-          <BurgerConstructor ingridient={data} />
+          <BurgerConstructor ingridients={data} />
         </section>
       </main>
     </div>

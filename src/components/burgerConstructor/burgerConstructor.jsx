@@ -6,47 +6,28 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerStyles from "./burgerConstructor.module.css";
 import PropTypes from "prop-types";
+import BurgerIngredient from "../burgerIngredient/burgerIngredient";
+import { useMemo } from "react";
+import {burgerIngridientTypes} from "../../utils/prop-types"
 
-const burgerIngridientTypes = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-});
 
-const BurgerIngredient = ({ ingridient }) => {
-  return (
-    <div className={`${burgerStyles.ingridient__container} pl-2`}>
-      <ConstructorElement
-        text={ingridient.name}
-        price={ingridient.price}
-        thumbnail={ingridient.image_mobile}
-      />
-    </div>
-  );
-};
-
-BurgerIngredient.propTypes = {
-  ingridient: burgerIngridientTypes.isRequired,
-};
-
-function BurgerConstructor({ ingridient }) {
+function BurgerConstructor({ ingridients }) {
   //нашла одну булку
-  const bun = ingridient.find((m) => m.type === "bun");
+  const bun = useMemo(
+    () => ingridients.find((m) => m.type === "bun"), [ingridients]);
   return (
     <div>
       <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
         <ConstructorElement
           type="top"
-          isLocked={true}
+          isLocked='true'
           text={`${bun.name} (верх)`}
           price={bun.price}
           thumbnail={bun.image}
           ingridient={bun}
         />
         <ul className={`${burgerStyles.ingridient__list} pt-5`}>
-          {ingridient.map(
+          {ingridients.map(
             (
               item //нашла все, кроме булки
             ) =>
@@ -63,7 +44,7 @@ function BurgerConstructor({ ingridient }) {
         </ul>
         <ConstructorElement
           type="bottom"
-          isLocked={true}
+          isLocked='true'
           text={`${bun.name} (низ)`}
           price={bun.price}
           thumbnail={bun.image_mobile}
@@ -84,7 +65,7 @@ function BurgerConstructor({ ingridient }) {
 }
 
 BurgerConstructor.propTypes = {
-  array: PropTypes.func,
+  ingridients: PropTypes.arrayOf(burgerIngridientTypes.isRequired).isRequired,
 };
 
 export default BurgerConstructor;

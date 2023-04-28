@@ -30,11 +30,6 @@
   display: flex;
 }
 
-.ingridient__container {
-  max-width: 536px;
-  display: flex;
-}
-
 .order {
   max-width: 552px;
   display: flex;

@@ -7,26 +7,6 @@
   gap: 32px 24px;
 }
 
-.ingridient__item {
-  max-width: 272px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.counter {
-  position: fixed;
-}
-
-.ingridient__price {
-  display: flex;
-}
-
-.text__align {
-  text-align: center;
-}
-
 .ingridient__container {
   height: 664px;
   overflow-y: scroll;

@@ -5,11 +5,12 @@ import {
 import { ingredientPropType } from "../../utils/prop-types.js";
 import ingridientItem from "./ingridientItem.module.css";
 
-const IngridientItem = ({ ingridient }) => {
+const IngridientItem = ({ ingridient, onClick}) => {
+
   return (
-    <div className={ingridientItem.ingridient__item}>
+    <div className={ingridientItem.ingridient__item} onClick={onClick}>
       <Counter className={ingridientItem.counter} />
-      <img src={ingridient.image} alt="фото." />
+      <img src={ingridient.image} alt="фото." id={ingridient._id}/>
       <div className={`${ingridientItem.ingridient__price} pt-1 pb-1`}>
         <p className="text text_type_digits-default pr-2">{ingridient.price}</p>
         <CurrencyIcon />

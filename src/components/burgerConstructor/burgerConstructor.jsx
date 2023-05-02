@@ -7,14 +7,26 @@ import {
 import burgerStyles from "./burgerConstructor.module.css";
 import PropTypes from "prop-types";
 import BurgerIngredient from "../burgerIngredient/burgerIngredient";
-import { useMemo } from "react";
-import {burgerIngridientTypes} from "../../utils/prop-types"
+import { useMemo, useState } from "react";
+import {burgerIngridientTypes} from "../../utils/prop-types";
+import Modal from "../modal/modal";
+import OrderDetails from "../orderDetails/orderDetails"
 
 
 function BurgerConstructor({ ingridients }) {
   //нашла одну булку
   const bun = useMemo(
     () => ingridients.find((m) => m.type === "bun"), [ingridients]);
+  const [ isOpen, setIsOpen ] = useState(false);
+  
+   const handleOpenModal = () => {
+      setIsOpen(true);
+    }
+
+   const handleCloseModal = () => {
+      setIsOpen(false);
+    }
+
   return (
     <div>
       <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
@@ -56,9 +68,12 @@ function BurgerConstructor({ ingridients }) {
           <p className="text text_type_digits-medium">610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large">
+          <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal}>
           Оформить заказ
         </Button>
+          <Modal isOpen={isOpen} onClose={handleCloseModal}>
+          <OrderDetails />
+      </Modal>
       </div>
     </div>
   );

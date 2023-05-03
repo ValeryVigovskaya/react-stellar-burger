@@ -1,21 +1,23 @@
 import styles from "./app.module.css";
-import AppHeader from "../appHeader/appHeader";
-import BurgerIngredients from "../burgerIngredients/burgerIngredients";
-import BurgerConstructor from "../burgerConstructor/burgerConstructor";
+import AppHeader from "../app-header/app-header";
+import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { useState, useEffect } from "react";
-import { withFetch } from "../../withFetch/withFetch";
+import { getDataFetch } from "../../api/api";
 import Modal from "../modal/modal";
-import IngredientDetails from "../ingredientDetails/ingredientDetails";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import OrderDetails from "../order-details/order-details";
 
 function App() {
+  //cостояние для массива из апи
   const [burgerIngredients, setburgerIngredients] = useState([]);
 
   useEffect(() => {
-    getIngredientsFetch();
+    getBurgerIngredientsFetch();
   }, []);
 
-  function getIngredientsFetch() {
-    withFetch()
+  function getBurgerIngredientsFetch() {
+    getDataFetch()
       .then((res) => {
         setburgerIngredients(res.data);
       })
@@ -23,6 +25,29 @@ function App() {
         console.log(err);
       });
   }
+  //состояния отрытия модального окна и ингредиента:
+  const [isOpenIngredient, setIsOpenIngredient] = useState(false);
+  const [tabIngredient, setTabIngredient] = useState(null);
+
+  function handleOpenModalIngredient(item) {
+    setIsOpenIngredient(true);
+    setTabIngredient(item);
+  }
+
+  const handleCloseModalIngredient = () => {
+    setIsOpenIngredient(false);
+    setTabIngredient(null);
+  };
+  //состояния отрытия модального окна для работы попапа заказа:
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
 
   return (
     <div className={styles.app}>
@@ -33,15 +58,29 @@ function App() {
           {burgerIngredients.length && (
             <BurgerIngredients
               ingridients={burgerIngredients}
+              onTab={handleOpenModalIngredient}
             />
           )}
         </section>
         <section className={styles.burger__constructor}>
           {burgerIngredients.length && (
-            <BurgerConstructor ingridients={burgerIngredients}/>
+            <BurgerConstructor
+              ingridients={burgerIngredients}
+              onClick={handleOpenModal}
+            />
           )}
         </section>
       </main>
+      <Modal
+        isOpen={isOpenIngredient}
+        onClose={handleCloseModalIngredient}
+        title="Детали ингредиента"
+      >
+        <IngredientDetails tabIngredient={tabIngredient} />
+      </Modal>
+      <Modal isOpen={isOpen} onClose={handleCloseModal}>
+        <OrderDetails />
+      </Modal>
     </div>
   );
 }

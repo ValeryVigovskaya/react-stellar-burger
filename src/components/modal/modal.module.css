@@ -11,23 +11,25 @@
 }
 
 .item {
+  max-width: 640px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
 
 .title_close_container {
-  margin: 0 auto;
-  max-width: 640px;
+  margin: 0;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
-.title {
+.title_container {
   width: 580px;
 }
 
 .button_close {
+  max-width: 24px;
   cursor: pointer;
   background-color: transparent;
   border: none;

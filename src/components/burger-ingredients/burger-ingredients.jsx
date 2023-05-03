@@ -1,12 +1,11 @@
 import { useRef, useState, useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import ingredientsStyles from "./burgerIngredients.module.css";
-import IngridientItem from "../ingridientItem/ingridientItem";
+import ingredientsStyles from "./burger-ingredients.module.css";
+import IngridientItem from "../ingridient-item/ingridient-item";
 import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredientDetails/ingredientDetails";
-function BurgerIngredients({ ingridients}) {
+
+function BurgerIngredients({ ingridients, onTab }) {
   const [current, setCurrent] = useState("one");
   const bun = "bun";
   const sauce = "sauce";
@@ -38,19 +37,6 @@ function BurgerIngredients({ ingridients}) {
     }
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [tabIngredient, setTabIngredient] = useState(null);
-
-  function handleOpenModal(ingridient){
-    setIsOpen(true);
-    setTabIngredient(ingridient);
-  };
-
-  const handleCloseModal = () => {
-    setIsOpen(false);
-    setTabIngredient(null);
-  };
-
   return (
     <>
       <div style={{ display: "flex" }} className="pt-5 pb-5">
@@ -72,10 +58,7 @@ function BurgerIngredients({ ingridients}) {
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
             {buns.map((ingridients) => (
               <li key={ingridients._id}>
-                <IngridientItem
-                  ingridient={ingridients}
-                  onClick={handleOpenModal}
-                />
+                <IngridientItem ingridient={ingridients} onTab={onTab} />
               </li>
             ))}
           </ul>
@@ -87,7 +70,7 @@ function BurgerIngredients({ ingridients}) {
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
             {sauces.map((ingridients) => (
               <li key={ingridients._id}>
-                <IngridientItem ingridient={ingridients} />
+                <IngridientItem ingridient={ingridients} onTab={onTab} />
               </li>
             ))}
           </ul>
@@ -99,18 +82,11 @@ function BurgerIngredients({ ingridients}) {
           <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
             {fillings.map((ingridients) => (
               <li key={ingridients._id}>
-                <IngridientItem ingridient={ingridients} />
+                <IngridientItem ingridient={ingridients} onTab={onTab} />
               </li>
             ))}
           </ul>
         </div>
-        <Modal
-          isOpen={isOpen}
-          onClose={handleCloseModal}
-          title="Детали ингредиента"
-        >
-          <IngredientDetails ingridient={tabIngredient} />
-        </Modal>
       </div>
     </>
   );

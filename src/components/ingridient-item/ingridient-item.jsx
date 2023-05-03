@@ -3,12 +3,12 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ingredientPropType } from "../../utils/prop-types.js";
-import ingridientItem from "./ingridientItem.module.css";
+import ingridientItem from "./ingridient-item.module.css";
 
-const IngridientItem = ({ ingridient, onClick}) => {
+const IngridientItem = ({ ingridient, onTab}) => {
 
   return (
-    <div className={ingridientItem.ingridient__item} onClick={onClick}>
+    <div className={ingridientItem.ingridient__item} onClick={() => onTab(ingridient)}>
       <Counter className={ingridientItem.counter} />
       <img src={ingridient.image} alt="фото." id={ingridient._id}/>
       <div className={`${ingridientItem.ingridient__price} pt-1 pb-1`}>

@@ -12,7 +12,7 @@ const config = {
   }
 }
 
-const withFetch = () => {
+const getDataFetch = () => {
   return fetch(`${config.baseUrl}`, {
     method: 'GET',
     headers: config.headers,
@@ -23,4 +23,4 @@ const withFetch = () => {
     });
 }
 
-export {withFetch}
+export {getDataFetch}

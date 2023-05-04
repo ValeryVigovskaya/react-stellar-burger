@@ -7,15 +7,27 @@ import {
 import burgerStyles from "./burger-constructor.module.css";
 import PropTypes from "prop-types";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { burgerIngridientTypes } from "../../utils/prop-types";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 
-function BurgerConstructor({ ingridients, onClick }) {
+function BurgerConstructor({ ingridients }) {
+  //состояния отрытия модального окна для работы попапа заказа:
+    const [isOpen, setIsOpen] = useState(false);
   //нашла одну булку
   const bun = useMemo(
     () => ingridients.find((m) => m.type === "bun"),
     [ingridients]
   );
+
+    const handleOpenModal = () => {
+      setIsOpen(true);
+    };
+  
+    const handleCloseModal = () => {
+      setIsOpen(false);
+    };
 
   return (
     <div>
@@ -58,10 +70,15 @@ function BurgerConstructor({ ingridients, onClick }) {
           <p className="text text_type_digits-medium">610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large" onClick={onClick}>
+        <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal}>
           Оформить заказ
         </Button>
       </div>
+      {isOpen &&
+       (<Modal  onClose={handleCloseModal}>
+        <OrderDetails />
+      </Modal>)
+      }
     </div>
   );
 }

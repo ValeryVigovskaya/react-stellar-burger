@@ -4,23 +4,37 @@ import {
   ConstructorElement,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import burgerStyles from "./burgerConstructor.module.css";
+import burgerStyles from "./burger-constructor.module.css";
 import PropTypes from "prop-types";
-import BurgerIngredient from "../burgerIngredient/burgerIngredient";
-import { useMemo } from "react";
-import {burgerIngridientTypes} from "../../utils/prop-types"
-
+import BurgerIngredient from "../burger-ingredient/burger-ingredient";
+import { useMemo, useState } from "react";
+import { burgerIngridientTypes } from "../../utils/prop-types";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 
 function BurgerConstructor({ ingridients }) {
+  //состояния отрытия модального окна для работы попапа заказа:
+    const [isOpen, setIsOpen] = useState(false);
   //нашла одну булку
   const bun = useMemo(
-    () => ingridients.find((m) => m.type === "bun"), [ingridients]);
+    () => ingridients.find((m) => m.type === "bun"),
+    [ingridients]
+  );
+
+    const handleOpenModal = () => {
+      setIsOpen(true);
+    };
+  
+    const handleCloseModal = () => {
+      setIsOpen(false);
+    };
+
   return (
     <div>
       <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
         <ConstructorElement
           type="top"
-          isLocked='true'
+          isLocked="true"
           text={`${bun.name} (верх)`}
           price={bun.price}
           thumbnail={bun.image}
@@ -44,7 +58,7 @@ function BurgerConstructor({ ingridients }) {
         </ul>
         <ConstructorElement
           type="bottom"
-          isLocked='true'
+          isLocked="true"
           text={`${bun.name} (низ)`}
           price={bun.price}
           thumbnail={bun.image_mobile}
@@ -56,10 +70,15 @@ function BurgerConstructor({ ingridients }) {
           <p className="text text_type_digits-medium">610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large">
+        <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal}>
           Оформить заказ
         </Button>
       </div>
+      {isOpen &&
+       (<Modal  onClose={handleCloseModal}>
+        <OrderDetails />
+      </Modal>)
+      }
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import burgerIngredient from "./burgerIngredient.module.css";
-import {burgerIngridientTypes} from "../../utils/prop-types"
-
+import burgerIngredient from "./burger-ingredient.module.css";
+import { burgerIngridientTypes } from "../../utils/prop-types";
 
 const BurgerIngredient = ({ ingridient }) => {
   return (

@@ -4,6 +4,7 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { useState, useEffect } from "react";
 import { getDataFetch } from "../../api/api";
+import {IngredientsContext, TotalPriceContext} from "../../services/ingredientContext"
 
 
 function App() {
@@ -36,13 +37,14 @@ function App() {
             />
           )}
         </section>
-        <section className={styles.burger__constructor}>
+          <section className={styles.burger__constructor}>
+          <IngredientsContext.Provider value={burgerIngredients}>
           {burgerIngredients.length && (
-            <BurgerConstructor
-              ingridients={burgerIngredients}
-            />
+            <BurgerConstructor/>
           )}
+          </IngredientsContext.Provider>
         </section>
+        
       </main>
     </div>
   );

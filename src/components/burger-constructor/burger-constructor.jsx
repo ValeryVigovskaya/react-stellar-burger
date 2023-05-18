@@ -1,24 +1,46 @@
 import {
   DragIcon,
-  CurrencyIcon,
   ConstructorElement,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerStyles from "./burger-constructor.module.css";
 import PropTypes from "prop-types";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useContext, useReducer } from "react";
 import { burgerIngridientTypes } from "../../utils/prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import TotalPrice from "../total-price/total-price";
+import {IngredientsContext, TotalPriceContext} from "../../services/ingredientContext"
 
-function BurgerConstructor({ ingridients }) {
+const priceInitialState = { price: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "set":
+      let total = 0;
+      action.arr.map(item => (total += item.price));
+      return {price : total}
+    case "reset":
+      return priceInitialState;
+    default:
+      throw new Error(`Wrong type of action: ${action.type}`);
+  }
+}
+
+function BurgerConstructor() {
+  const ingridients = useContext(IngredientsContext);
   //состояния отрытия модального окна для работы попапа заказа:
     const [isOpen, setIsOpen] = useState(false);
   //нашла одну булку
   const bun = useMemo(
     () => ingridients.find((m) => m.type === "bun"),
     [ingridients]
+  );
+  const [priceState, priceDispatcher] = useReducer(
+    reducer,
+    priceInitialState,
+    undefined
   );
 
     const handleOpenModal = () => {
@@ -31,6 +53,7 @@ function BurgerConstructor({ ingridients }) {
 
   return (
     <div>
+      <TotalPriceContext.Provider value={{ priceState, priceDispatcher }}>
       <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
         <ConstructorElement
           type="top"
@@ -66,14 +89,12 @@ function BurgerConstructor({ ingridients }) {
         />
       </div>
       <div className={`${burgerStyles.order} pt-5 pr-4`}>
-        <div className={burgerStyles.price}>
-          <p className="text text_type_digits-medium">610</p>
-          <CurrencyIcon type="primary" />
-        </div>
+        <TotalPrice/>
         <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal}>
           Оформить заказ
         </Button>
       </div>
+      </TotalPriceContext.Provider>
       {isOpen &&
        (<Modal  onClose={handleCloseModal}>
         <OrderDetails />
@@ -84,7 +105,7 @@ function BurgerConstructor({ ingridients }) {
 }
 
 BurgerConstructor.propTypes = {
-  ingridients: PropTypes.arrayOf(burgerIngridientTypes.isRequired).isRequired,
+  ingridients: PropTypes.arrayOf(burgerIngridientTypes.isRequired)
 };
 
 export default BurgerConstructor;

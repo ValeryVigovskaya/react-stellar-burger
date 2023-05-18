@@ -4,7 +4,7 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { useState, useEffect } from "react";
 import { getDataFetch } from "../../api/api";
-import {IngredientsContext, TotalPriceContext} from "../../services/ingredientContext"
+import {IngredientsContext} from "../../services/ingredientContext"
 
 
 function App() {

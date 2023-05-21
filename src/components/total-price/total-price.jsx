@@ -1,19 +1,23 @@
-import React, { useContext } from "react";
 import {
     CurrencyIcon,
   } from "@ya.praktikum/react-developer-burger-ui-components";
-import totalStylePrice from "./total-price.module.css"
-import {TotalPriceContext} from "../../services/ingredientContext";
+import totalStylePrice from "./total-price.module.css";
+import { totalPriceTypes } from "../../utils/prop-types";
 
- const TotalPrice = () => {
-  const { priceState } = useContext(TotalPriceContext);
+ const TotalPrice = ({totalPrice}) => {
     return (
-        <div className={totalStylePrice.price}>
+        <div className={`${totalStylePrice.price} pr-5`}>
           <p className="text text_type_digits-medium">
-            {priceState.price}</p>
-          <CurrencyIcon type="primary" />
+            {totalPrice}</p>
+            <div>
+              <CurrencyIcon type="primary" />
+            </div>
         </div>
     )
 }
 
 export default TotalPrice;
+
+TotalPrice.propTypes = {
+  price: totalPriceTypes,
+};

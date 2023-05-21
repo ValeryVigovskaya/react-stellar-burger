@@ -4,8 +4,7 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { useState, useEffect } from "react";
 import { getDataFetch } from "../../api/api";
-import {IngredientsContext} from "../../services/ingredientContext"
-
+import { IngredientsContext } from "../../services/ingredientContext";
 
 function App() {
   //cостояние для массива из апи
@@ -29,22 +28,17 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <main className={styles.main}>
-        <section className={styles.ingredients}>
-          <h1 className="text text_type_main-large">Соберите бургер</h1>
-          {burgerIngredients.length && (
-            <BurgerIngredients
-              ingridients={burgerIngredients}
-            />
-          )}
-        </section>
+        <IngredientsContext.Provider value={burgerIngredients}>
+          <section className={styles.ingredients}>
+            <h1 className="text text_type_main-large">Соберите бургер</h1>
+            {burgerIngredients.length && (
+              <BurgerIngredients ingridients={burgerIngredients} />
+            )}
+          </section>
           <section className={styles.burger__constructor}>
-          <IngredientsContext.Provider value={burgerIngredients}>
-          {burgerIngredients.length && (
-            <BurgerConstructor/>
-          )}
-          </IngredientsContext.Provider>
-        </section>
-        
+            {burgerIngredients.length && <BurgerConstructor />}
+          </section>
+        </IngredientsContext.Provider>
       </main>
     </div>
   );

@@ -1,5 +1,12 @@
+.price_container{
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
 .price {
-    max-width: 119px;
+    min-width: 119px;
     display: flex;
     gap: 8px;
     align-items: center;

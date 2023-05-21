@@ -2,27 +2,35 @@ import {
   DragIcon,
   ConstructorElement,
   Button,
+  CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerStyles from "./burger-constructor.module.css";
 import PropTypes from "prop-types";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import { useMemo, useState, useContext, useReducer } from "react";
-import { burgerIngridientTypes } from "../../utils/prop-types";
+import { useMemo, useState, useContext, useReducer, useEffect } from "react";
+import {
+  burgerIngridientTypes,
+  orderDetailsTypes,
+} from "../../utils/prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import TotalPrice from "../total-price/total-price";
-import {IngredientsContext, TotalPriceContext} from "../../services/ingredientContext"
+import {
+  IngredientsContext,
+  TotalPriceContext,
+  OrderContext,
+  IngredientsConstructorContext
+} from "../../services/ingredientContext";
+import { postOrder } from "../../api/api";
 
-const priceInitialState = { price: 0 };
+const ingredientsInitialState = { array: [] };
 
 function reducer(state, action) {
   switch (action.type) {
     case "set":
-      let total = 0;
-      action.arr.map(item => (total += item.price));
-      return {price : total}
+      return { array: action.payload };
     case "reset":
-      return priceInitialState;
+      return ingredientsInitialState;
     default:
       throw new Error(`Wrong type of action: ${action.type}`);
   }
@@ -30,82 +38,134 @@ function reducer(state, action) {
 
 function BurgerConstructor() {
   const ingridients = useContext(IngredientsContext);
+  //состояние для номера заказа
+  const [order, setOrder] = useState("");
   //состояния отрытия модального окна для работы попапа заказа:
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   //нашла одну булку
   const bun = useMemo(
     () => ingridients.find((m) => m.type === "bun"),
     [ingridients]
   );
-  const [priceState, priceDispatcher] = useReducer(
+  //нашла только соусы и начинки
+  const saucesAndMains = useMemo(
+    () => ingridients.filter((m) => m.type !== "bun"),
+    [ingridients]
+  );
+  const [price, setPrice] = useState(0);
+
+  const [ingredientsState, ingredientsPriceDispatcher] = useReducer(
     reducer,
-    priceInitialState,
+    ingredientsInitialState,
     undefined
   );
 
-    const handleOpenModal = () => {
-      setIsOpen(true);
-    };
-  
-    const handleCloseModal = () => {
-      setIsOpen(false);
-    };
+  //нашла id ингредиентов в конструкторе
+  const orderIngridients = useMemo(
+    () => ingridients.map((m) => m._id),
+    [ingridients]
+  );
+  //console.log(orderIngridients)
+
+  const handleOpenModal = () => {
+    setIsOpen(true);
+    postOrderIngredientsFetch();
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
+  function postOrderIngredientsFetch() {
+    postOrder(orderIngridients)
+      .then((res) => {
+        setOrder(res.order.number.toString());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  //функция расчета стоимости
+  const totalPrice = useMemo(() => {
+    const priceIngredients = saucesAndMains.reduce((acc, item) => {
+      return acc + item.price;
+    }, 0);
+    return priceIngredients + bun.price * 2;
+  }, [bun, saucesAndMains]);
+
+  //сохранила диспатчер и указала массив, который используется
+  useEffect(() => {
+    ingredientsPriceDispatcher({ type: "set", array: ingridients });
+  }, [ingridients]);
 
   return (
     <div>
-      <TotalPriceContext.Provider value={{ priceState, priceDispatcher }}>
-      <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
-        <ConstructorElement
-          type="top"
-          isLocked="true"
-          text={`${bun.name} (верх)`}
-          price={bun.price}
-          thumbnail={bun.image}
-          ingridient={bun}
-        />
-        <ul className={`${burgerStyles.ingridient__list} pt-5`}>
-          {ingridients.map(
-            (
-              item //нашла все, кроме булки
-            ) =>
-              item.type !== "bun" && (
-                <li
-                  key={item._id}
-                  className={`${burgerStyles.ingridient__item} pb-4`}
-                >
-                  <DragIcon type="primary" />
-                  <BurgerIngredient ingridient={item} />
-                </li>
-              )
-          )}
-        </ul>
-        <ConstructorElement
-          type="bottom"
-          isLocked="true"
-          text={`${bun.name} (низ)`}
-          price={bun.price}
-          thumbnail={bun.image_mobile}
-          ingridient={bun}
-        />
-      </div>
-      <div className={`${burgerStyles.order} pt-5 pr-4`}>
-        <TotalPrice/>
-        <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal}>
-          Оформить заказ
-        </Button>
-      </div>
+      <IngredientsConstructorContext.Provider value={ingredientsState}>
+      <TotalPriceContext.Provider value={{ price, setPrice}}>
+        <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
+          <ConstructorElement
+            type="top"
+            isLocked="true"
+            text={`${bun.name} (верх)`}
+            price={bun.price}
+            thumbnail={bun.image}
+            ingridient={bun}
+          />
+          <ul className={`${burgerStyles.ingridient__list} pt-5`}>
+            {ingridients.map(
+              (
+                item //нашла все, кроме булки
+              ) =>
+                item.type !== "bun" && (
+                  <li
+                    key={item._id}
+                    className={`${burgerStyles.ingridient__item} pb-4`}
+                  >
+                    <DragIcon type="primary" />
+                    <BurgerIngredient ingridient={item} />
+                  </li>
+                )
+            )}
+          </ul>
+          <ConstructorElement
+            type="bottom"
+            isLocked="true"
+            text={`${bun.name} (низ)`}
+            price={bun.price}
+            thumbnail={bun.image_mobile}
+            ingridient={bun}
+          />
+        </div>
+        <div className={`${burgerStyles.order} pt-5 pr-4`}>
+          <TotalPrice totalPrice={totalPrice} />
+          <div className="pl-5">
+            <Button
+              htmlType="button"
+              type="primary"
+              size="large"
+              onClick={handleOpenModal}
+            >
+              Оформить заказ
+            </Button>
+          </div>
+        </div>
       </TotalPriceContext.Provider>
-      {isOpen &&
-       (<Modal  onClose={handleCloseModal}>
-        <OrderDetails />
-      </Modal>)
-      }
+      </IngredientsConstructorContext.Provider>
+      <OrderContext.Provider value={order}>
+        {isOpen && (
+          <Modal onClose={handleCloseModal}>
+            <OrderDetails />
+          </Modal>
+        )}
+      </OrderContext.Provider>
     </div>
   );
 }
 
 BurgerConstructor.propTypes = {
-  ingridients: PropTypes.arrayOf(burgerIngridientTypes.isRequired)
+  ingridients: PropTypes.arrayOf(burgerIngridientTypes.isRequired),
+  order: orderDetailsTypes,
 };
 
 export default BurgerConstructor;

@@ -50,6 +50,8 @@ function BurgerConstructor() {
     () => ingridients.filter((m) => m.type !== "bun"),
     [ingridients]
   );
+
+  const [ error, setError ] = useState(false);
   //const [price, setPrice] = useState(0);
 
   //const [ingredientsState, ingredientsPriceDispatcher] = useReducer(
@@ -78,9 +80,11 @@ function BurgerConstructor() {
     postOrder(orderIngridients)
       .then((res) => {
         setOrder(res.order.number.toString());
+        setError(false);
       })
       .catch((err) => {
         console.log(err);
+        setError(true);
       });
   }
 
@@ -99,6 +103,8 @@ function BurgerConstructor() {
 
   return (
     <div>
+      {error && 'Произошла ошибка'}
+        {!error&&
         <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
           <ConstructorElement
             type="top"
@@ -132,7 +138,7 @@ function BurgerConstructor() {
             thumbnail={bun.image_mobile}
             ingridient={bun}
           />
-        </div>
+        </div>}
         <div className={`${burgerStyles.order} pt-5 pr-4`}>
           <TotalPrice totalPrice={totalPrice} />
           <div className="pl-5">

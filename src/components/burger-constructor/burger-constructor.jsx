@@ -17,24 +17,22 @@ import OrderDetails from "../order-details/order-details";
 import TotalPrice from "../total-price/total-price";
 import {
   IngredientsContext,
-  TotalPriceContext,
   OrderContext,
-  IngredientsConstructorContext
 } from "../../services/ingredientContext";
 import { postOrder } from "../../api/api";
 
-const ingredientsInitialState = { array: [] };
+//const ingredientsInitialState = { array: [] };
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "set":
-      return { array: action.payload };
-    case "reset":
-      return ingredientsInitialState;
-    default:
-      throw new Error(`Wrong type of action: ${action.type}`);
-  }
-}
+//function reducer(state, action) {
+  //switch (action.type) {
+    //case "set":
+    //  return { array: action.payload };
+    //case "reset":
+    //  return ingredientsInitialState;
+    //default:
+    //  throw new Error(`Wrong type of action: ${action.type}`);
+ // }
+//}
 
 function BurgerConstructor() {
   const ingridients = useContext(IngredientsContext);
@@ -52,13 +50,13 @@ function BurgerConstructor() {
     () => ingridients.filter((m) => m.type !== "bun"),
     [ingridients]
   );
-  const [price, setPrice] = useState(0);
+  //const [price, setPrice] = useState(0);
 
-  const [ingredientsState, ingredientsPriceDispatcher] = useReducer(
-    reducer,
-    ingredientsInitialState,
-    undefined
-  );
+  //const [ingredientsState, ingredientsPriceDispatcher] = useReducer(
+    //reducer,
+   // ingredientsInitialState,
+   // undefined
+  //);
 
   //нашла id ингредиентов в конструкторе
   const orderIngridients = useMemo(
@@ -95,14 +93,12 @@ function BurgerConstructor() {
   }, [bun, saucesAndMains]);
 
   //сохранила диспатчер и указала массив, который используется
-  useEffect(() => {
-    ingredientsPriceDispatcher({ type: "set", array: ingridients });
-  }, [ingridients]);
+ // useEffect(() => {
+  //  ingredientsPriceDispatcher({ type: "set", array: ingridients });
+ // }, [ingridients]);
 
   return (
     <div>
-      <IngredientsConstructorContext.Provider value={ingredientsState}>
-      <TotalPriceContext.Provider value={{ price, setPrice}}>
         <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
           <ConstructorElement
             type="top"
@@ -150,8 +146,6 @@ function BurgerConstructor() {
             </Button>
           </div>
         </div>
-      </TotalPriceContext.Provider>
-      </IngredientsConstructorContext.Provider>
       <OrderContext.Provider value={order}>
         {isOpen && (
           <Modal onClose={handleCloseModal}>

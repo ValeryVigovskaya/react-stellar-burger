@@ -37,7 +37,7 @@ import { postOrder } from "../../api/api";
 function BurgerConstructor() {
   const ingridients = useContext(IngredientsContext);
   //состояние для номера заказа
-  const [order, setOrder] = useState("");
+  const [order, setOrder] = useState(" ");
   //состояния отрытия модального окна для работы попапа заказа:
   const [isOpen, setIsOpen] = useState(false);
   //нашла одну булку

@@ -23,4 +23,18 @@ const getDataFetch = () => {
     });
 }
 
-export {getDataFetch}
+const postOrder = (array) => {
+  return fetch('https://norma.nomoreparties.space/api/orders', {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      'ingredients': array,
+    })
+  })
+    .then(checkResponse)
+    .catch((err) => {
+      console.log(err)
+    });
+}
+
+export { getDataFetch, postOrder }

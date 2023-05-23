@@ -1,0 +1,13 @@
+.price_container{
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.price {
+    min-width: 119px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }

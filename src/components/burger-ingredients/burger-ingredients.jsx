@@ -1,4 +1,4 @@
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useContext } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import IngridientItem from "../ingridient-item/ingridient-item";
@@ -6,8 +6,12 @@ import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import {
+  IngredientsContext,
+} from "../../services/ingredientContext";
 
-function BurgerIngredients({ ingridients }) {
+function BurgerIngredients() {
+  const ingridients = useContext(IngredientsContext);
   const [current, setCurrent] = useState("one");
   const bun = "bun";
   const sauce = "sauce";

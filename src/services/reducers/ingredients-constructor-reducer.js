@@ -3,6 +3,8 @@ import {
   ADD_INGREDIENTS_BUN,
   DELETE_INGREDIENTS_CONSTRUCTOR,
   MOVE_INGREDIENT_ITEM,
+  CLEAR_INGREDIENTS_CONSTRUCTOR,
+  CLEAR_BUN_CONSTRUCTOR
 } from '../actions/actions'
 import update from 'immutability-helper'
 
@@ -42,6 +44,18 @@ export const ingredientsConstructorReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredients: updateIngredients
+      }
+    }
+    case CLEAR_INGREDIENTS_CONSTRUCTOR: {
+      return {
+        ...state,
+        ingredients: []
+      }
+    }
+    case CLEAR_BUN_CONSTRUCTOR: {
+      return {
+        ...state,
+        bun: null
       }
     }
     default: {

@@ -10,15 +10,15 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <main className={styles.main}>
-      <DndProvider backend={HTML5Backend}>
+        <DndProvider backend={HTML5Backend}>
           <section className={styles.ingredients}>
             <h1 className="text text_type_main-large">Соберите бургер</h1>
-              <BurgerIngredients/>
+            <BurgerIngredients />
           </section>
           <section className={styles.burger__constructor}>
-           <BurgerConstructor />
+            <BurgerConstructor />
           </section>
-          </DndProvider>
+        </DndProvider>
       </main>
     </div>
   );

@@ -2,17 +2,15 @@ import { useState, useMemo, useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import IngridientItem from "../ingridient-item/ingridient-item";
-import { ingredientPropType } from "../../utils/prop-types";
-import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getData,
-  MODAL_INGREDIENT_DETAILS_OPEN,
-  MODAL_INGREDIENT_DETAILS_CLOSE,
-  TAB_INGREDIENT,
-  TAB_INGREDIENT_DELETE,
+  openModalIngredientDetails,
+  closeModalIngredientDetails,
+  returnTabIngredient,
+  deleteTabIngredient,
 } from "../../services/actions/actions";
 import { useInView } from "react-intersection-observer";
 
@@ -38,13 +36,13 @@ function BurgerIngredients() {
   const main = "main";
 
   function handleOpenModalIngredient(item) {
-    dispatch({ type: MODAL_INGREDIENT_DETAILS_OPEN });
-    dispatch({ type: TAB_INGREDIENT, tabIngredient: item });
+    dispatch(openModalIngredientDetails());
+    dispatch(returnTabIngredient(item));
   }
 
   const handleCloseModalIngredient = () => {
-    dispatch({ type: MODAL_INGREDIENT_DETAILS_CLOSE });
-    dispatch({ type: TAB_INGREDIENT_DELETE });
+    dispatch(closeModalIngredientDetails());
+    dispatch(deleteTabIngredient());
   };
   //нашла все булки
   const buns = useMemo(
@@ -162,8 +160,5 @@ function BurgerIngredients() {
     );
   }
 }
-BurgerIngredients.propTypes = {
-  ingridients: PropTypes.arrayOf(ingredientPropType.isRequired),
-};
 
 export default BurgerIngredients;

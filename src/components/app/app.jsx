@@ -4,11 +4,6 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useSelector, useDispatch } from 'react-redux';
-import { useMemo, useState, useContext, useReducer, useEffect } from "react";
-import { getData, MODAL_INGREDIENT_DETAILS_OPEN,
-  MODAL_INGREDIENT_DETAILS_CLOSE, TAB_INGREDIENT, TAB_INGREDIENT_DELETE} from '../../services/actions/actions';
-  import { useDrag } from 'react-dnd';
 
 function App() {
   return (

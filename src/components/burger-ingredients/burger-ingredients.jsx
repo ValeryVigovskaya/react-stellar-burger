@@ -1,51 +1,64 @@
-import { useRef, useState, useMemo, useContext } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import IngridientItem from "../ingridient-item/ingridient-item";
-import { ingredientPropType } from "../../utils/prop-types";
-import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import { useSelector, useDispatch } from "react-redux";
 import {
-  IngredientsContext,
-} from "../../services/ingredientContext";
+  getData,
+  openModalIngredientDetails,
+  closeModalIngredientDetails,
+  returnTabIngredient,
+  deleteTabIngredient,
+} from "../../services/actions/actions";
+import { useInView } from "react-intersection-observer";
 
 function BurgerIngredients() {
-  const ingridients = useContext(IngredientsContext);
-  const [current, setCurrent] = useState("one");
+  const {
+    burgerIngredients,
+    burgerIngredientsRequest,
+    burgerIngredientsFailed,
+  } = useSelector((state) => state.burgerIngredients);
+  const { isOpenIngredient } = useSelector((state) => state.ingredientDetails);
+  // Получаем метод dispatch
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Отправляем экшен-функцию
+    dispatch(getData());
+  }, [dispatch]);
+
+  const [current, setCurrent] = useState("one"); //при клике на таб скролл продолжает работать
+
   const bun = "bun";
   const sauce = "sauce";
   const main = "main";
-  //состояния отрытия модального окна и ингредиента:
-  const [isOpenIngredient, setIsOpenIngredient] = useState(false);
-  const [tabIngredient, setTabIngredient] = useState(null);
 
   function handleOpenModalIngredient(item) {
-    setIsOpenIngredient(true);
-    setTabIngredient(item);
+    dispatch(openModalIngredientDetails());
+    dispatch(returnTabIngredient(item));
   }
 
   const handleCloseModalIngredient = () => {
-    setIsOpenIngredient(false);
-    setTabIngredient(null);
+    dispatch(closeModalIngredientDetails());
+    dispatch(deleteTabIngredient());
   };
   //нашла все булки
   const buns = useMemo(
-    () => ingridients.filter((m) => m.type === bun),
-    [ingridients]
+    () => burgerIngredients.filter((m) => m.type === bun),
+    [burgerIngredients]
   );
   //нашла все соусы
   const sauces = useMemo(
-    () => ingridients.filter((m) => m.type === sauce),
-    [ingridients]
+    () => burgerIngredients.filter((m) => m.type === sauce),
+    [burgerIngredients]
   );
   //нашла все начинки
   const fillings = useMemo(
-    () => ingridients.filter((m) => m.type === main),
-    [ingridients]
+    () => burgerIngredients.filter((m) => m.type === main),
+    [burgerIngredients]
   );
-
-  const ref = useRef();
 
   //константа для хранения состояния выбранного таба и подключения скролла при клике
   const tabStorage = (selectTab) => {
@@ -55,78 +68,97 @@ function BurgerIngredients() {
       return item.scrollIntoView({ behavior: "smooth" });
     }
   };
+//реализация активных кнопок при скролле с помощью Intersection Observer Api
+  const [oneRef, oneInView] = useInView({ threshold: 0.5 });
+  const [twoRef, twoInView] = useInView({ threshold: 1 });
+  const [threeRef, threeInView] = useInView({ threshold: 0.2 });
 
-  return (
-    <>
-      <div style={{ display: "flex" }} className="pt-5 pb-5">
-        <Tab value="one" active={current === "one"} onClick={tabStorage}>
-          Булки
-        </Tab>
-        <Tab value="two" active={current === "two"} onClick={tabStorage}>
-          Соусы
-        </Tab>
-        <Tab value="three" active={current === "three"} onClick={tabStorage}>
-          Начинки
-        </Tab>
-      </div>
-      <div className={`${ingredientsStyles.ingridient__container} mt-5`}>
-        <div className="pb-5">
-          <h2 className="text text_type_main-medium pb-1" id="one" ref={ref}>
+  if (burgerIngredientsFailed) {
+    return <p>Произошла ошибка при получении данных</p>;
+  } else if (burgerIngredientsRequest) {
+    return <p>Загрузка...</p>;
+  } else {
+    return (
+      <>
+        <div style={{ display: "flex" }} className="pt-5 pb-5">
+          <Tab value="one" active={oneInView === true} onClick={tabStorage}>
             Булки
-          </h2>
-          <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
-            {buns.map((ingridients) => (
-              <li key={ingridients._id}>
-                <IngridientItem
-                  ingridient={ingridients}
-                  onTab={handleOpenModalIngredient}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="pt-5 pb-5">
-          <h2 className="text text_type_main-medium pb-1" id="two" ref={ref}>
+          </Tab>
+          <Tab value="two" active={twoInView === true} onClick={tabStorage}>
             Соусы
-          </h2>
-          <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
-            {sauces.map((ingridients) => (
-              <li key={ingridients._id}>
-                <IngridientItem
-                  ingridient={ingridients}
-                  onTab={handleOpenModalIngredient}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="pt-5 pb-5">
-          <h2 className="text text_type_main-medium pb-1" id="three" ref={ref}>
+          </Tab>
+          <Tab value="three" active={threeInView === true} onClick={tabStorage}>
             Начинки
-          </h2>
-          <ul className={`${ingredientsStyles.ingridient__list} pt-5`}>
-            {fillings.map((ingridients) => (
-              <li key={ingridients._id}>
-                <IngridientItem
-                  ingridient={ingridients}
-                  onTab={handleOpenModalIngredient}
-                />
-              </li>
-            ))}
-          </ul>
+          </Tab>
         </div>
-      </div>
-      {isOpenIngredient && (
-       (<Modal onClose={handleCloseModalIngredient} title="Детали ингредиента">
-          <IngredientDetails tabIngredient={tabIngredient} />
-        </Modal>) 
-      )}
-    </>
-  );
+        <div
+          className={`${ingredientsStyles.ingridient__container} mt-5`}
+          id="scroll-list"
+        >
+          <div className="pb-5">
+            <h2 className="text text_type_main-medium pb-1" id="one">
+              Булки
+            </h2>
+            <ul
+              className={`${ingredientsStyles.ingridient__list} pt-5`}
+              id="one"
+              ref={oneRef}
+            >
+              {buns.map((ingridients) => (
+                <li key={ingridients._id}>
+                  <IngridientItem
+                    ingridient={ingridients}
+                    onTab={handleOpenModalIngredient}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="pt-5 pb-5">
+            <h2 className="text text_type_main-medium pb-1">Соусы</h2>
+            <ul
+              className={`${ingredientsStyles.ingridient__list} pt-5`}
+              id="two"
+              ref={twoRef}
+            >
+              {sauces.map((ingridients) => (
+                <li key={ingridients._id}>
+                  <IngridientItem
+                    ingridient={ingridients}
+                    onTab={handleOpenModalIngredient}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="pt-5 pb-5" ref={threeRef}>
+            <h2 className="text text_type_main-medium pb-1">Начинки</h2>
+            <ul
+              className={`${ingredientsStyles.ingridient__list} pt-5`}
+              id="three"
+            >
+              {fillings.map((ingridients) => (
+                <li key={ingridients._id}>
+                  <IngridientItem
+                    ingridient={ingridients}
+                    onTab={handleOpenModalIngredient}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        {isOpenIngredient && (
+          <Modal
+            onClose={handleCloseModalIngredient}
+            title="Детали ингредиента"
+          >
+            <IngredientDetails />
+          </Modal>
+        )}
+      </>
+    );
+  }
 }
-
-BurgerIngredients.propTypes = {
-  ingridients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-};
 
 export default BurgerIngredients;

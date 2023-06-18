@@ -1,111 +1,106 @@
 import {
-  DragIcon,
   ConstructorElement,
   Button,
-  CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerStyles from "./burger-constructor.module.css";
-import PropTypes from "prop-types";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import { useMemo, useState, useContext, useReducer, useEffect } from "react";
-import {
-  burgerIngridientTypes,
-  orderDetailsTypes,
-} from "../../utils/prop-types";
+import { useMemo, useCallback } from "react";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import TotalPrice from "../total-price/total-price";
+import { useSelector, useDispatch } from "react-redux";
 import {
-  IngredientsContext,
-  OrderContext,
-} from "../../services/ingredientContext";
-import { postOrder } from "../../api/api";
-
-//const ingredientsInitialState = { array: [] };
-
-//function reducer(state, action) {
-  //switch (action.type) {
-    //case "set":
-    //  return { array: action.payload };
-    //case "reset":
-    //  return ingredientsInitialState;
-    //default:
-    //  throw new Error(`Wrong type of action: ${action.type}`);
- // }
-//}
+  addIngredients,
+  addIngredientsBun,
+  openModalOrderDetails,
+  closeModalOrderDetails,
+  postOrderFetch,
+  moveIngredientItem,
+  clearConstructorIngredients,
+  clearConstructorBun,
+} from "../../services/actions/actions";
+import { useDrop } from "react-dnd";
+import { v4 as uuidv4 } from "uuid";
 
 function BurgerConstructor() {
-  const ingridients = useContext(IngredientsContext);
-  //состояние для номера заказа
-  const [order, setOrder] = useState("");
-  //состояния отрытия модального окна для работы попапа заказа:
-  const [isOpen, setIsOpen] = useState(false);
-  //нашла одну булку
-  const bun = useMemo(
-    () => ingridients.find((m) => m.type === "bun"),
-    [ingridients]
+  // Получаем метод dispatch
+  const dispatch = useDispatch();
+  //состояния булок, ингредиентов и модального окна из редьюсера
+  const { bun, ingredients } = useSelector(
+    (state) => state.ingredientsConstructor
   );
+  const { isOpenOrder } = useSelector((state) => state.orderDetails);
   //нашла только соусы и начинки
   const saucesAndMains = useMemo(
-    () => ingridients.filter((m) => m.type !== "bun"),
-    [ingridients]
+    () => ingredients.filter((m) => m.type !== "bun"),
+    [ingredients]
   );
-
-  const [ error, setError ] = useState(false);
-  //const [price, setPrice] = useState(0);
-
-  //const [ingredientsState, ingredientsPriceDispatcher] = useReducer(
-    //reducer,
-   // ingredientsInitialState,
-   // undefined
-  //);
 
   //нашла id ингредиентов в конструкторе
   const orderIngridients = useMemo(
-    () => ingridients.map((m) => m._id),
-    [ingridients]
+    () => ingredients.map((m) => m._id),
+    [ingredients]
   );
-  //console.log(orderIngridients)
 
+  //функция обработки экшеном в падении
+  function onDropHandler(item) {
+    if (item.type === "bun") {
+      return dispatch(addIngredientsBun(item));
+    } else if (item.type !== "bun") {
+      return dispatch(addIngredients(item, uuidv4()));
+    }
+  }
+  //хук обработки падения
+  const [{ isActive }, drop] = useDrop({
+    accept: "ingredient",
+    drop(itemId) {
+      onDropHandler(itemId);
+    },
+    collect: (monitor) => ({
+      isActive: monitor.canDrop() && monitor.isOver(),
+    }),
+  });
   const handleOpenModal = () => {
-    setIsOpen(true);
-    postOrderIngredientsFetch();
+    dispatch(openModalOrderDetails());
+    //тк булки отдельно создала новый массив на основе старых
+    const allIngredients = [...orderIngridients, bun._id];
+    dispatch(postOrderFetch(allIngredients));
   };
 
   const handleCloseModal = () => {
-    setIsOpen(false);
+    dispatch(closeModalOrderDetails());
+    dispatch(clearConstructorIngredients());
+    dispatch(clearConstructorBun());
   };
-
-  function postOrderIngredientsFetch() {
-    postOrder(orderIngridients)
-      .then((res) => {
-        setOrder(res.order.number.toString());
-        setError(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setError(true);
-      });
-  }
 
   //функция расчета стоимости
   const totalPrice = useMemo(() => {
     const priceIngredients = saucesAndMains.reduce((acc, item) => {
       return acc + item.price;
     }, 0);
-    return priceIngredients + bun.price * 2;
-  }, [bun, saucesAndMains]);
+    const bunPrice = () => {
+      if (bun) {
+        return 2 * bun.price;
+      } else {
+        return 0;
+      } //тк булка изначально нулевая, price не находился, создала функцию
+    };
+    return priceIngredients + bunPrice();
+  }, [saucesAndMains, bun]);
 
-  //сохранила диспатчер и указала массив, который используется
- // useEffect(() => {
-  //  ingredientsPriceDispatcher({ type: "set", array: ingridients });
- // }, [ingridients]);
+  //функция обновления состояния при сортировке
+  const moveItemIngredient = useCallback(
+    (dragIndex, hoverIndex) => {
+      dispatch(moveIngredientItem(dragIndex, hoverIndex));
+    },
+    [dispatch]
+  );
 
   return (
     <div>
-      {error && 'Произошла ошибка'}
-        {!error&&
-        <div className={`${burgerStyles.ingridient} pl-4 pb-5`}>
+      <div className={`${burgerStyles.ingridient} pl-4 pb-5`} ref={drop}>
+        {isActive && "булочку закинь повыше, соусы и начинки - посередине"}
+        {bun && (
           <ConstructorElement
             type="top"
             isLocked="true"
@@ -114,22 +109,18 @@ function BurgerConstructor() {
             thumbnail={bun.image}
             ingridient={bun}
           />
-          <ul className={`${burgerStyles.ingridient__list} pt-5`}>
-            {ingridients.map(
-              (
-                item //нашла все, кроме булки
-              ) =>
-                item.type !== "bun" && (
-                  <li
-                    key={item._id}
-                    className={`${burgerStyles.ingridient__item} pb-4`}
-                  >
-                    <DragIcon type="primary" />
-                    <BurgerIngredient ingridient={item} />
-                  </li>
-                )
-            )}
-          </ul>
+        )}
+        <ul className={`${burgerStyles.ingridient__list} pt-5`}>
+          {ingredients.map((item, key) => (
+            <li key={key} className={`${burgerStyles.ingridient__item} pb-4`}>
+              <BurgerIngredient
+                ingridient={item}
+                moveItemIngredient={moveItemIngredient}
+              />
+            </li>
+          ))}
+        </ul>
+        {bun && (
           <ConstructorElement
             type="bottom"
             isLocked="true"
@@ -138,9 +129,11 @@ function BurgerConstructor() {
             thumbnail={bun.image_mobile}
             ingridient={bun}
           />
-        </div>}
-        <div className={`${burgerStyles.order} pt-5 pr-4`}>
-          <TotalPrice totalPrice={totalPrice} />
+        )}
+      </div>
+      <div className={`${burgerStyles.order} pt-5 pr-4`}>
+        <TotalPrice totalPrice={totalPrice} />
+        {bun ? (
           <div className="pl-5">
             <Button
               htmlType="button"
@@ -151,21 +144,21 @@ function BurgerConstructor() {
               Оформить заказ
             </Button>
           </div>
-        </div>
-      <OrderContext.Provider value={order}>
-        {isOpen && (
-          <Modal onClose={handleCloseModal}>
-            <OrderDetails />
-          </Modal>
+        ) : (
+          <div className="pl-5">
+            <Button htmlType="button" type="primary" size="large">
+              Оформить заказ
+            </Button>
+          </div>
         )}
-      </OrderContext.Provider>
+      </div>
+      {isOpenOrder && (
+        <Modal onClose={handleCloseModal}>
+          <OrderDetails />
+        </Modal>
+      )}
     </div>
   );
 }
-
-BurgerConstructor.propTypes = {
-  ingridients: PropTypes.arrayOf(burgerIngridientTypes.isRequired),
-  order: orderDetailsTypes,
-};
 
 export default BurgerConstructor;

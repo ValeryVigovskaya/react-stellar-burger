@@ -1,3 +1,5 @@
+const BASE_URL = "https://norma.nomoreparties.space/api/";
+
 function checkResponse(res) {      //функция проверки ответа сервера
   if (res.ok) {
     return res.json();
@@ -5,36 +7,25 @@ function checkResponse(res) {      //функция проверки ответ�
   return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-const config = {
-  baseUrl: 'https://norma.nomoreparties.space/api/ingredients',
-  headers: {
-    'Content-Type': 'application/json'
-  }
+function request(endpoint, options) {
+  // принимает два аргумента: урл и объект опций, как и `fetch`
+  return fetch(`${BASE_URL}${endpoint}`, options)
+    .then(checkResponse)
 }
+
 
 const getDataFetch = () => {
-  return fetch(`${config.baseUrl}`, {
-    method: 'GET',
-    headers: config.headers,
-  })
-    .then(checkResponse)
-    .catch((err) => {
-      console.log(err); // выводим ошибку в консоль 
-    });
+  return request('ingredients')
 }
 
-const postOrder = (array) => {
-  return fetch('https://norma.nomoreparties.space/api/orders', {
+const postOrder = (ingredients) => {
+  return request('orders', {
     method: 'POST',
-    headers: config.headers,
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      'ingredients': array,
+      ingredients
     })
   })
-    .then(checkResponse)
-    .catch((err) => {
-      console.log(err)
-    });
 }
 
 export { getDataFetch, postOrder }

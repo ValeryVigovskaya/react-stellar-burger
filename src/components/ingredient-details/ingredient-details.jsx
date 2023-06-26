@@ -7,7 +7,7 @@ const IngredientDetails = () => {
   );
 
   return (
-    <div className={`${ingredientDetails.container} `}>
+    <div className={`${ingredientDetails.container} `} >
       <figure className={`${ingredientDetails.figure} pb-4`}>
         <img src={tabIngredient.image_large} alt="картинка ингредиента" />
         <figcaption

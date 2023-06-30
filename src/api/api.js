@@ -1,11 +1,9 @@
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 
-function checkResponse(res) {      //функция проверки ответа сервера
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`);
-}
+const checkResponse = (res) => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+};
+
 
 function request(endpoint, options) {
   // принимает два аргумента: урл и объект опций, как и `fetch`
@@ -21,8 +19,10 @@ const getDataFetch = () => {
 const postOrder = (ingredients) => {
   return request('orders', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json',
-    authorization: localStorage.getItem('accessToken') },
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: localStorage.getItem('accessToken')
+    },
     body: JSON.stringify({
       ingredients
     })
@@ -39,8 +39,8 @@ const getUser = () => {
   })
 }
 
-export const patchUser = ({name, email, password}) => {
-  return request('auth/user', {
+export const patchUser = ({ name, email, password }) => {
+  return fetchWithRefresh('auth/user', {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -86,7 +86,7 @@ export const fetchWithRefresh = async (endpoint, options) => {
   }
 };
 
-const login = ({email, password}) => {
+const login = ({ email, password }) => {
   return request('auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -99,8 +99,10 @@ const login = ({email, password}) => {
 const logOut = () => {
   return request('auth/logout', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json',
-    authorization: localStorage.getItem('accessToken') },
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: localStorage.getItem('accessToken')
+    },
     body: JSON.stringify({
       token: localStorage.getItem("refreshToken"),
     })
@@ -109,7 +111,7 @@ const logOut = () => {
 
 
 
-const postRegister = ({email, password, name}) => {
+const postRegister = ({ email, password, name }) => {
   return request('auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -129,7 +131,7 @@ const postMail = (email) => {
   })
 }
 
-const resetPass = ({password, token}) => {
+const resetPass = ({ password, token }) => {
   return request('password-reset/reset', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

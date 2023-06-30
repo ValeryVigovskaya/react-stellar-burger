@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { home } from "../utils/constants";
 
 const Protected = ({ onlyUnAuth = false, component }) => {
   const isAuthChecked = useSelector((state) => state.userReducer.isAuthChecked);
@@ -12,7 +13,7 @@ const Protected = ({ onlyUnAuth = false, component }) => {
 
   if (onlyUnAuth && user) {
     // Пользователь авторизован, но роут предназначен для неавторизованного пользователя
-    const { from } = location.state || { from: { pathname: "/" } };
+    const { from } = location.state || { from: { pathname: home } };
     return <Navigate to={from} />
   }
 

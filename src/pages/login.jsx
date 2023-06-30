@@ -8,42 +8,37 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signIn } from "../services/actions/actions-user";
+import { register, forgotPass } from "../utils/constants";
+import { useForm } from "../hooks/useForm";
 
 function LoginPage() {
-  const [value, setValue] = useState({ email: "", password: "" });
+  const { values, handleChange} = useForm({ email: "", password: "" });
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const [isVisible, setVisible] = useState(false);
 
-  const onChangeMail = (e) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const onClick = () => {
-    dispatch(signIn(value));
-    navigate("/profile", { replace: true });
+  const onClickSubmit = (e) => {
+    e.preventDefault();
+    dispatch(signIn(values));
   };
 
   function onClickReg() {
-    navigate("/register", { replace: true });
+    navigate(register, { replace: true });
   }
 
   function onClickForgotPass() {
-    navigate("/forgot-password", { replace: true });
+    navigate(forgotPass, { replace: true });
   }
 
   return (
     <div className={log.container}>
-      <form className={log.form}>
+      <form className={log.form} onSubmit={onClickSubmit}>
         <h2 className={`${log.title} text text_type_main-medium pb-3`}>Вход</h2>
         <fieldset className={`${log.input_items} pb-3 pt-3`}>
           <EmailInput
-            onChange={onChangeMail}
-            value={value.email}
+            onChange={handleChange}
+            value={values.email}
             name={"email"}
             isIcon={false}
             placeholder={"E-mail"}
@@ -51,9 +46,9 @@ function LoginPage() {
           <Input
             type={isVisible ? "text" : "password"}
             placeholder={"Пароль"}
-            onChange={onChangeMail}
+            onChange={handleChange}
             icon={isVisible ? "ShowIcon" : "HideIcon"}
-            value={value.password}
+            value={values.password}
             name={"password"}
             error={false}
             ref={inputRef}
@@ -64,10 +59,9 @@ function LoginPage() {
         </fieldset>
         <div className={`${log.button} pt-3 mb-15`}>
           <Button
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
-            onClick={onClick}
           >
             Войти
           </Button>

@@ -5,18 +5,17 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useRef } from "react";
 import { useNavigate, NavLink, useMatch, Outlet } from "react-router-dom";
-//import { signOut } from "../services/actions/actions-user";
 import { signOut, patchUserFetch } from "../services/actions/actions-user";
 import { useDispatch, useSelector } from "react-redux";
-import ProfileOrdersPage from "../pages/profileOrders";
+import { login } from "../utils/constants";
+import { useForm } from "../hooks/useForm";
 
 function ProfilePage() {
   const user = useSelector((state) => state.userReducer.user);
-  const [value, setValue] = useState({
-    name: user.name,
+  const { values, handleChange, setValues} = useForm({ name: user.name,
     email: user.email,
-    password: "",
-  });
+    password: "",});
+
   const [isEditing, setEditing] = useState({
     name: false,
     email: false,
@@ -37,30 +36,24 @@ function ProfilePage() {
   const profileLink = useMatch("/profile");
   const profileOrdersLink = useMatch("/profile/orders");
 
-  const onChange = (e) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const onClickOut = () => {
-    navigate("/login", { replace: true });
+    navigate(login, { replace: true });
     dispatch(signOut());
   };
 
-  const onClickSave = () => {
-    dispatch(patchUserFetch(value));
+  const onClickSubmit = (e) => {
+    e.preventDefault();
+    dispatch(patchUserFetch(values));
   };
 
   function onClickCancel(e) {
     e.preventDefault();
-    setValue({ name: user.name, email: user.email, password: "" });
+    setValues({ name: user.name, email: user.email, password: "" });
   }
 
   //условия для отображения кнопок
   const onChangeInput =
-    value.name !== user.name || value.email !== user.email || value.password;
+  values.name !== user.name || values.email !== user.email || values.password;
 
   return (
     <div className={log.container_profile}>
@@ -97,15 +90,15 @@ function ProfilePage() {
         </p>
       </div>
       {!!profileLink ? (
-        <form className={log.form}>
+        <form className={log.form} onSubmit={onClickSubmit}>
           <fieldset className={`${log.input_items} pb-3`}>
             <Input
               type={"text"}
               placeholder={"Имя"}
-              onChange={onChange}
-              icon={value.name ? "EditIcon" : "CloseIcon"}
+              onChange={handleChange}
+              icon={values.name ? "EditIcon" : "CloseIcon"}
               onIconClick={() => setEditing(!isEditing)}
-              value={value.name}
+              value={values.name}
               name={"name"}
               error={false}
               ref={inputNameRef}
@@ -115,10 +108,10 @@ function ProfilePage() {
             <Input
               type={"text"}
               placeholder={"E-mail"}
-              onChange={onChange}
-              icon={value.email ? "EditIcon" : "CloseIcon"}
+              onChange={handleChange}
+              icon={values.email ? "EditIcon" : "CloseIcon"}
               onIconClick={() => setEditing(!isEditing)}
-              value={value.email}
+              value={values.email}
               name={"email"}
               error={false}
               ref={inputEmailRef}
@@ -128,10 +121,10 @@ function ProfilePage() {
             <Input
               type={"password"}
               placeholder={"Пароль"}
-              onChange={onChange}
-              icon={value.password ? "CloseIcon" : "EditIcon"}
+              onChange={handleChange}
+              icon={values.password ? "CloseIcon" : "EditIcon"}
               onIconClick={() => setEditing(!isEditing)}
-              value={value.password}
+              value={values.password}
               name={"password"}
               error={false}
               ref={inputPasswordRef}
@@ -149,12 +142,7 @@ function ProfilePage() {
               >
                 Отмена
               </Button>
-              <Button
-                htmlType="button"
-                type="primary"
-                size="medium"
-                onClick={onClickSave}
-              >
+              <Button htmlType="submit" type="primary" size="medium">
                 Сохранить
               </Button>
             </div>

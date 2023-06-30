@@ -7,34 +7,30 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { resetPass } from "../api/api";
 import { Navigate } from "react-router-dom";
+import { login, forgotPass } from "../utils/constants";
+import { useForm } from "../hooks/useForm";
 
 function ResetPass() {
-  const [value, setValue] = useState({ password: "", token: "" });
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const [isVisible, setVisible] = useState(false);
-
-  const onChange = (e) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const {values, handleChange} = useForm({password: "", token: "" });
 
   function onClick() {
-    navigate("/login", { replace: true });
+    navigate(login, { replace: true });
   }
 
-  const onClickButton = () => {
+  const onClickSubmit = (e) => {
+    e.preventDefault();
     postPassFetch();
-    navigate("/login", { replace: true });
+    navigate(login, { replace: true });
   };
 
   function postPassFetch() {
-    return resetPass(value)
+    return resetPass(values)
       .then((res) => {
-        value.password = res;
-        value.token = res;
+        values.password = res;
+        values.token = res;
         localStorage.removeItem("email");
       })
       .catch((err) => {
@@ -43,11 +39,11 @@ function ResetPass() {
   }
   //условие, для запрета перехода на маршрут
   if (!localStorage.getItem("email")) {
-    return <Navigate to="/forgot-password" replace={true} />;
+    return <Navigate to={forgotPass} replace={true} />;
   }
   return (
     <div className={log.container}>
-      <form className={log.form}>
+      <form className={log.form} onSubmit={onClickSubmit}>
         <h2 className={`${log.title} text text_type_main-medium pb-3`}>
           Восстановление пароля
         </h2>
@@ -55,10 +51,10 @@ function ResetPass() {
           <Input
             type={isVisible ? "text" : "password"}
             placeholder={"Введите новый пароль"}
-            onChange={onChange}
+            onChange={handleChange}
             icon={isVisible ? "ShowIcon" : "HideIcon"}
             onIconClick={() => setVisible(!isVisible)}
-            value={value.password}
+            value={values.password}
             name={"password"}
             error={false}
             ref={inputRef}
@@ -69,8 +65,8 @@ function ResetPass() {
           <Input
             type={"text"}
             placeholder={"Введите код из письма"}
-            onChange={onChange}
-            value={value.token}
+            onChange={handleChange}
+            value={values.token}
             name={"token"}
             error={false}
             ref={inputRef}
@@ -80,12 +76,7 @@ function ResetPass() {
           />
         </fieldset>
         <div className={`${log.button} pt-3 mb-15`}>
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            onClick={onClickButton}
-          >
+          <Button htmlType="submit" type="primary" size="medium">
             Сохранить
           </Button>
         </div>

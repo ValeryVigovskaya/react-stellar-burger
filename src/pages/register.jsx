@@ -8,42 +8,36 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { register } from "../services/actions/actions-user";
+import { login } from "../utils/constants";
+import { useForm } from "../hooks/useForm";
 
 function RegisterPage() {
-  const [value, setValue] = useState({ name: "", email: "", password: "" });
+  const { values, handleChange} = useForm({ name: "", email: "", password: "" });
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const [isVisible, setVisible] = useState(false);
   const dispatch = useDispatch();
 
-  const onChange = (e) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   function onClick() {
-    navigate("/login", { replace: true });
+    navigate(login, { replace: true });
   }
 
-  const onClickSubmitButton = (evt) => {
+  const onClickSubmit = (evt) => {
     evt.preventDefault();
-    navigate("/login", { replace: true });
-    dispatch(register(value));
+    dispatch(register(values));  
   };
   return (
     <div className={log.container}>
-      <form className={log.form}>
-        <h2 className={`${log.title} text text_type_main-medium pb-3`}>
+      <h2 className={`${log.title} text text_type_main-medium pb-3`}>
           Регистрация
         </h2>
+      <form className={log.form} onSubmit={onClickSubmit}>
         <fieldset className={`${log.input_items} pb-3 pt-3`}>
           <Input
             type={"text"}
             placeholder={"Имя"}
-            onChange={onChange}
-            value={value.name}
+            onChange={handleChange}
+            value={values.name}
             name={"name"}
             error={false}
             ref={inputRef}
@@ -51,8 +45,8 @@ function RegisterPage() {
             size={"default"}
           />
           <EmailInput
-            onChange={onChange}
-            value={value.email}
+            onChange={handleChange}
+            value={values.email}
             name={"email"}
             placeholder="E-mail"
             isIcon={false}
@@ -60,9 +54,9 @@ function RegisterPage() {
           <Input
             type={isVisible ? "text" : "password"}
             placeholder={"Пароль"}
-            onChange={onChange}
+            onChange={handleChange}
             icon={isVisible ? "ShowIcon" : "HideIcon"}
-            value={value.password}
+            value={values.password}
             name={"password"}
             error={false}
             ref={inputRef}
@@ -73,10 +67,9 @@ function RegisterPage() {
         </fieldset>
         <div className={`${log.button} pt-3 mb-15`}>
           <Button
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
-            onClick={onClickSubmitButton}
           >
             Зарегистрироваться
           </Button>

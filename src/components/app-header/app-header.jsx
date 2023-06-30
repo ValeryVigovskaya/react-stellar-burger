@@ -3,20 +3,19 @@ import {
   BurgerIcon,
   ProfileIcon,
   ListIcon,
-  Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import headerStyles from "./app-header.module.css";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useMatch } from "react-router-dom";
 
 function AppHeader() {
-  const navigate = useNavigate();
+  const style = ({ isActive }) =>
+    isActive
+      ? `${headerStyles.header_link} ${headerStyles.header_link_active} text_type_main-default pl-2`
+      : `${headerStyles.header_link} text_type_main-default  text_color_inactive pl-2`;
+  const homeLink = useMatch("/");
+  const profileLink = useMatch("/profile");
+  const orderFeedLink = useMatch("/orders");
 
-  function onClickProfile() {
-    navigate("/profile", { replace: true });
-  }
-  function onClickConstructor() {
-    navigate("/", { replace: true });
-  } 
   return (
     <header className={headerStyles.header}>
       <div className={headerStyles.logo}>
@@ -25,24 +24,34 @@ function AppHeader() {
       <nav className="pb-4 pt-4">
         <ul className={`${headerStyles.header_list}`}>
           <li className={`${headerStyles.header_item} pl-5 pr-5`}>
-          <Button type="secondary" extraClass={`${headerStyles.header_link} text_type_main-default text_color_inactive`} onClick={onClickConstructor}>
-              <BurgerIcon type="primary" />
-              <p className="text text_type_main-default  pl-2">Конструктор</p>
-            </Button>
+            <NavLink to={{ pathname: "/" }} className={style}>
+              {homeLink ? (
+                <BurgerIcon type={"primary"} />
+              ) : (
+                <BurgerIcon type={"secondary"} />
+              )}
+              Конструктор
+            </NavLink>
           </li>
           <li className={`${headerStyles.header_item} pl-5`}>
-            <a href="#order-feed" className={headerStyles.header_link}>
-              <ListIcon type="secondary" />
-              <p className="text text_type_main-default text_color_inactive pl-2">
-                Лента заказов
-              </p>
-            </a>
+            <NavLink to={{ pathname: "/orders" }} className={style}>
+              {orderFeedLink ? (
+                <ListIcon type={"primary"} />
+              ) : (
+                <ListIcon type={"secondary"} />
+              )}
+              Лента заказов
+            </NavLink>
           </li>
-          <li className={`${headerStyles.header_item} pl-5`}>
-            <Button type="secondary" extraClass={`${headerStyles.header_link} text_type_main-default text_color_inactive pr-5`} onClick={onClickProfile}>
-              <ProfileIcon type="secondary" />
-                Личный кабинет       
-            </Button>
+          <li className={`${headerStyles.header_item} pl-5 pr-5`}>
+            <NavLink to={{ pathname: "/profile" }} className={style}>
+              {profileLink ? (
+                <ProfileIcon type={"primary"} />
+              ) : (
+                <ProfileIcon type={"secondary"} />
+              )}
+              Личный кабинет
+            </NavLink>
           </li>
         </ul>
       </nav>

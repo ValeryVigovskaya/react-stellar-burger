@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   isAuthChecked: false,
-  user:null,
+  user: null,
   patchRequest: false,
   patchFailed: false,
   signinRequest: false,
@@ -31,107 +31,107 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         user: action.payload
       }
-      case PATCH_USER_REQUEST: {
-        return {
-          ...state,
-          patchRequest: true,
-          patchFailed: false,
-        };
-      }
-      case PATCH_USER_SUCCESS: {
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            name: action.user.name,
-            email: action.user.email,
-          },
-          patchRequest: false,
-          isAuthChecked: true
-       };
-      }
-      case PATCH_USER_FAILED: {
-        return {
-          ...state,
-          patchFailed: true,
-          patchRequest: false
-        };
-      }
+    case PATCH_USER_REQUEST: {
+      return {
+        ...state,
+        patchRequest: true,
+        patchFailed: false,
+      };
+    }
+    case PATCH_USER_SUCCESS: {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          name: action.user.name,
+          email: action.user.email,
+        },
+        patchRequest: false,
+        isAuthChecked: true
+      };
+    }
+    case PATCH_USER_FAILED: {
+      return {
+        ...state,
+        patchFailed: true,
+        patchRequest: false
+      };
+    }
 
-      case POST_REGISTER_REQUEST: {
-        return {
-          ...state,
-          registerRequest: true,
-          registerFailed: false,
-        };
+    case POST_REGISTER_REQUEST: {
+      return {
+        ...state,
+        registerRequest: true,
+        registerFailed: false,
+      };
+    }
+    case POST_REGISTER_SUCCESS: {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          name: action.user.name,
+          email: action.user.email,
+        },
+        registerRequest: false,
+        isAuthChecked: true
+      };
+    }
+    case POST_REGISTER_FAILED: {
+      return {
+        ...state,
+        registerFailed: true,
+        registerRequest: false
+      };
+    }
+    case POST_SIGNIN_REQUEST: {
+      return {
+        ...state,
+        signinRequest: true,
+        signinFailed: false,
       }
-      case POST_REGISTER_SUCCESS: {
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            name: action.user.name,
-            email: action.user.email,
-          },
-          registerRequest: false,
-          isAuthChecked: true
-       };
+    }
+    case POST_SIGNIN_SUCCES: {
+      return {
+        ...state,
+        signinRequest: false,
+        user: {
+          ...state.user,
+          name: action.user.name,
+          email: action.user.email,
+        },
+        isAuthChecked: true,
       }
-      case POST_REGISTER_FAILED: {
-        return {
-          ...state,
-          registerFailed: true,
-          registerRequest: false
-        };
+    }
+    case POST_SIGNIN_FAILED: {
+      return {
+        ...state,
+        signRequest: false,
+        signFailed: true,
       }
-      case POST_SIGNIN_REQUEST: {
-        return {
-          ...state,
-          signinRequest: true,
-          signinFailed: false,
-        }
+    }
+    case POST_SIGNOUT_REQUEST: {
+      return {
+        ...state,
+        signoutRequest: true,
+        signoutFailed: false,
+
       }
-      case POST_SIGNIN_SUCCES: {
-        return {
-          ...state,
-          signinRequest: false,
-          user: {
-            ...state.user,
-            name: action.user.name,
-            email: action.user.email,
-          },
-          isAuthChecked: true,
-        }
+    }
+    case POST_SIGNOUT_SUCCESS: {
+      return {
+        ...state,
+        signoutRequest: false,
+        signoutFailed: true,
       }
-      case POST_SIGNIN_FAILED: {
-        return {
-          ...state,
-          signRequest: false,
-          signFailed: true,
-        }
+    }
+    case POST_SIGNOUT_FAILED: {
+      return {
+        ...state,
+        signoutRequest: false,
+        signoutFailed: true,
       }
-      case POST_SIGNOUT_REQUEST: {
-        return {
-          ...state,
-          signoutRequest: true,
-          signoutFailed: false,
-          
-        }
-      }
-      case POST_SIGNOUT_SUCCESS: {
-        return {
-          ...state,
-          signoutRequest: false,
-          signoutFailed: true,
-        }
-      }
-      case POST_SIGNOUT_FAILED: {
-        return {
-          ...state,
-          signoutRequest: false,
-          signoutFailed: true,
-        }
-      }
+    }
 
     default:
       return state;

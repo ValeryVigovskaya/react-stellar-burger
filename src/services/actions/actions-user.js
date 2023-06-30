@@ -1,5 +1,4 @@
-import { array } from 'prop-types';
-import { getUser, login, postMail, postRegister, logOut, refreshToken, patchUser, resetPass } from '../../api/api'
+import { getUser, login, postRegister, logOut, patchUser} from '../../api/api'
 
 export const GET_USER_REQUEST = 'GET_DATA_REQUEST';
 export const GET_USER_SUCCESS = 'GET_DATA_SUCCESS';
@@ -16,14 +15,6 @@ export const POST_SIGNIN_FAILED = 'POST_SIGNIN_FAILED';
 export const POST_SIGNOUT_REQUEST = 'POST_SIGNOUT_REQUEST';
 export const POST_SIGNOUT_SUCCESS = 'POST_SIGNOUT_SUCCESST';
 export const POST_SIGNOUT_FAILED = 'POST_SIGNOUT_FAILED';
-
-export const POST_PASS_REQUEST = 'POST_PASS_REQUEST';
-export const POST_PASS_SUCCESS = 'POST_PASS_SUCCESS';
-export const POST_PASS_FAILED = 'POST_PASS_FAILED';
-
-export const POST_RESET_REQUEST = 'POST_PASS_REQUEST';
-export const POST_RESET_SUCCESS = 'POST_PASS_SUCCESS';
-export const POST_RESET_FAILED = 'POST_PASS_FAILED';
 
 export const POST_REGISTER_REQUEST = 'POST_REGISTER_REQUEST';
 export const POST_REGISTER_SUCCESS = 'POST_REGISTER_SUCCESS';
@@ -107,8 +98,6 @@ export const patchUserFetch = (form) => {
       });
   }
 };
-
-
 
 export const signIn = (form) => {
   return function (dispatch) {

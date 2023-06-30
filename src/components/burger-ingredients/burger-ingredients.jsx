@@ -12,6 +12,7 @@ import {
 } from "../../services/actions/actions";
 import { useInView } from "react-intersection-observer";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 function BurgerIngredients() {
   const {
@@ -24,6 +25,9 @@ function BurgerIngredients() {
   const dispatch = useDispatch();
   //const navigate = useNavigate();
   const location = useLocation();
+ // const id = useParams()
+
+  //const burgerIngredient = burgerIngredients.find((item) => item._id === id);
 
   useEffect(() => {
     // Отправляем экшен-функцию
@@ -104,10 +108,9 @@ function BurgerIngredients() {
               {buns.map((ingridients) => (
                 <Link
                   key={ingridients._id}
-                  to={{
-                    pathname: `/ingredients/${ingridients._id}`,
-                    state: { background: location },
-                  }}
+                  className={`${ingredientsStyles.ingridient__link} `}
+                  to={`/ingredients/${ingridients._id}`}
+                  state={{ background: location }}
                 >
                   <IngridientItem
                     ingridient={ingridients}
@@ -127,10 +130,9 @@ function BurgerIngredients() {
               {sauces.map((ingridients) => (
                 <Link
                   key={ingridients._id}
-                  to={{
-                    pathname: `/ingredients/${ingridients._id}`,
-                    state: { background: location },
-                  }}
+                  to={`/ingredients/${ingridients._id}`}
+                  state={{ background: location }}
+                  className={`${ingredientsStyles.ingridient__link} `}
                 >
                   <IngridientItem
                     ingridient={ingridients}
@@ -149,10 +151,9 @@ function BurgerIngredients() {
               {fillings.map((ingridients) => (
                 <Link
                   key={ingridients._id}
-                  to={{
-                    pathname: `/ingredients/${ingridients._id}`,
-                    state: { background: location },
-                  }}
+                  to={`/ingredients/${ingridients._id}`}
+                  state={{ background: location }}
+                  className={`${ingredientsStyles.ingridient__link} `}
                 >
                   <IngridientItem
                     ingridient={ingridients}

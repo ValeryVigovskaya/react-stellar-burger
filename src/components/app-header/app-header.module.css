@@ -21,6 +21,7 @@
 
 .header_item {
   display: flex;
+  gap: 8px;
 }
 
 .header_item:last-of-type {

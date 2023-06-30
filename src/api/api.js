@@ -21,7 +21,8 @@ const getDataFetch = () => {
 const postOrder = (ingredients) => {
   return request('orders', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+    authorization: localStorage.getItem('accessToken') },
     body: JSON.stringify({
       ingredients
     })
@@ -30,8 +31,10 @@ const postOrder = (ingredients) => {
 
 const getUser = () => {
   return fetchWithRefresh('auth/user', {
+    method: "GET",
     headers: {
-      authorization: localStorage.getItem('accessToken')
+      authorization: localStorage.getItem('accessToken'),
+      "Content-Type": "application/json;charset=utf-8",
     },
   })
 }
@@ -44,7 +47,7 @@ export const patchUser = ({name, email, password}) => {
       authorization: localStorage.getItem('accessToken')
     },
     body: JSON.stringify({
-      name, email, password,
+      name, email, password
     }),
   });
 };

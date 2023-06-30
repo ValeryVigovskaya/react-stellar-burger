@@ -6,12 +6,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {signIn} from "../services/actions/actions-user";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { signIn } from "../services/actions/actions-user";
 
 function LoginPage() {
-  const [value, setValue] = useState({email:'', password:''});
+  const [value, setValue] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -20,21 +19,22 @@ function LoginPage() {
   const onChangeMail = (e) => {
     setValue({
       ...value,
-      [e.target.name]:e.target.value});
+      [e.target.name]: e.target.value,
+    });
   };
 
   const onClick = () => {
     dispatch(signIn(value));
-    navigate('/', { replace: true });
-}
+    navigate("/profile", { replace: true });
+  };
 
-    function onClickReg() {
-    navigate('/register', { replace: true });
-}
+  function onClickReg() {
+    navigate("/register", { replace: true });
+  }
 
-function onClickForgotPass() {
-  navigate('/forgot-password', { replace: true });
-}
+  function onClickForgotPass() {
+    navigate("/forgot-password", { replace: true });
+  }
 
   return (
     <div className={log.container}>
@@ -49,10 +49,10 @@ function onClickForgotPass() {
             placeholder={"E-mail"}
           />
           <Input
-            type={isVisible ? 'text' : 'password'}
+            type={isVisible ? "text" : "password"}
             placeholder={"Пароль"}
             onChange={onChangeMail}
-            icon={isVisible ? 'ShowIcon' : 'HideIcon'}
+            icon={isVisible ? "ShowIcon" : "HideIcon"}
             value={value.password}
             name={"password"}
             error={false}
@@ -60,29 +60,45 @@ function onClickForgotPass() {
             onIconClick={() => setVisible(!isVisible)}
             errorText={"Ошибка"}
             size={"default"}
-            //extraClass="ml-1"
           />
         </fieldset>
         <div className={`${log.button} pt-3 mb-15`}>
-        <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
-          Войти
-        </Button>
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={onClick}
+          >
+            Войти
+          </Button>
         </div>
       </form>
       <div className={`${log.text_container} pt-5`}>
         <p className="text text_type_main-default text_color_inactive">
           Вы новый пользователь?
         </p>
-        <Button htmlType="button" type="secondary" size="medium" onClick={onClickReg} extraClass="pl-2 pr-2">
-        Зарегистрироваться
+        <Button
+          htmlType="button"
+          type="secondary"
+          size="medium"
+          onClick={onClickReg}
+          extraClass="pl-2 pr-2"
+        >
+          Зарегистрироваться
         </Button>
       </div>
       <div className={`${log.text_container}`}>
         <p className="text text_type_main-default text_color_inactive">
           Забыли пароль?
         </p>
-        <Button htmlType="button" type="secondary" size="medium" extraClass="pl-2 pr-2" onClick={onClickForgotPass}>
-        Восстановить пароль
+        <Button
+          htmlType="button"
+          type="secondary"
+          size="medium"
+          extraClass="pl-2 pr-2"
+          onClick={onClickForgotPass}
+        >
+          Восстановить пароль
         </Button>
       </div>
     </div>

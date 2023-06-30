@@ -6,34 +6,32 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import {useDispatch} from "react-redux";
-import {register} from "../services/actions/actions-user";
+import { useDispatch } from "react-redux";
+import { register } from "../services/actions/actions-user";
 
 function RegisterPage() {
-  const [value, setValue] = useState({name:'', email:'', password:''});
+  const [value, setValue] = useState({ name: "", email: "", password: "" });
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const [isVisible, setVisible] = useState(false);
-
+  const dispatch = useDispatch();
 
   const onChange = (e) => {
     setValue({
       ...value,
-      [e.target.name]:e.target.value});
+      [e.target.name]: e.target.value,
+    });
   };
 
   function onClick() {
-    navigate('/login', { replace: true });
-}
+    navigate("/login", { replace: true });
+  }
 
-const dispatch = useDispatch();
-
-const onClickSubmitButton = (evt) => {
-  evt.preventDefault();
-  navigate('/login', { replace: true });
-  dispatch(register(value));
-}
+  const onClickSubmitButton = (evt) => {
+    evt.preventDefault();
+    navigate("/login", { replace: true });
+    dispatch(register(value));
+  };
   return (
     <div className={log.container}>
       <form className={log.form}>
@@ -51,7 +49,6 @@ const onClickSubmitButton = (evt) => {
             ref={inputRef}
             errorText={"Ошибка"}
             size={"default"}
-            //extraClass="ml-1"
           />
           <EmailInput
             onChange={onChange}
@@ -61,10 +58,10 @@ const onClickSubmitButton = (evt) => {
             isIcon={false}
           />
           <Input
-            type={isVisible ? 'text' : 'password'}
+            type={isVisible ? "text" : "password"}
             placeholder={"Пароль"}
             onChange={onChange}
-            icon={isVisible ? 'ShowIcon' : 'HideIcon'}
+            icon={isVisible ? "ShowIcon" : "HideIcon"}
             value={value.password}
             name={"password"}
             error={false}
@@ -72,12 +69,14 @@ const onClickSubmitButton = (evt) => {
             onIconClick={() => setVisible(!isVisible)}
             errorText={"Ошибка"}
             size={"default"}
-            //extraClass="ml-1"
           />
         </fieldset>
         <div className={`${log.button} pt-3 mb-15`}>
           <Button
-            htmlType="button" type="primary" size="medium" onClick={onClickSubmitButton}
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={onClickSubmitButton}
           >
             Зарегистрироваться
           </Button>
@@ -85,10 +84,16 @@ const onClickSubmitButton = (evt) => {
       </form>
       <div className={`${log.text_container} pt-5`}>
         <p className="text text_type_main-default text_color_inactive">
-         Уже зарегистрированы?
+          Уже зарегистрированы?
         </p>
-        <Button htmlType="button" type="secondary" size="medium" onClick={onClick} extraClass="pl-2 pr-2">
-        Войти
+        <Button
+          htmlType="button"
+          type="secondary"
+          size="medium"
+          onClick={onClick}
+          extraClass="pl-2 pr-2"
+        >
+          Войти
         </Button>
       </div>
     </div>

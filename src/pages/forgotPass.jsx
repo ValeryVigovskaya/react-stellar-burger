@@ -39,10 +39,8 @@ const onClickButton = () => {
 function postMailFetch() {
     return postMail(value.email)
       .then(res => {
-        value.email = res;
-      })
-      .then (()=>{
-        localStorage.setItem('mail', value.email);
+        value.email = res.email;
+        localStorage.setItem('email', res.email);
       })
       .catch((err) => {
         console.error(`Ошибка: ${err}`);

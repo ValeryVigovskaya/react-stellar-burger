@@ -3,7 +3,6 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postMail } from "../api/api";
 import { login, resetPass } from "../utils/constants";

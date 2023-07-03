@@ -1,4 +1,4 @@
-import { getDataFetch, postOrder } from '../../api/api'
+import { getDataFetch, postOrder, getUser, login, postMail, postRegister, logOut } from '../../api/api'
 export const GET_DATA_REQUEST = 'GET_DATA_REQUEST';
 export const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS';
 export const GET_DATA_FAILED = 'GET_DATA_FAILED';
@@ -154,4 +154,3 @@ export function moveIngredientItem(dragIndex, hoverIndex) {
         hoverIndex: hoverIndex,
   }
 }
-

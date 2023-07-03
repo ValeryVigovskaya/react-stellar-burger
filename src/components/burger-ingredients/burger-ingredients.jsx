@@ -2,8 +2,6 @@ import { useState, useMemo, useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import IngridientItem from "../ingridient-item/ingridient-item";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getData,
@@ -13,6 +11,8 @@ import {
   deleteTabIngredient,
 } from "../../services/actions/actions";
 import { useInView } from "react-intersection-observer";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 function BurgerIngredients() {
   const {
@@ -20,9 +20,14 @@ function BurgerIngredients() {
     burgerIngredientsRequest,
     burgerIngredientsFailed,
   } = useSelector((state) => state.burgerIngredients);
-  const { isOpenIngredient } = useSelector((state) => state.ingredientDetails);
+
   // Получаем метод dispatch
   const dispatch = useDispatch();
+  //const navigate = useNavigate();
+  const location = useLocation();
+ // const id = useParams()
+
+  //const burgerIngredient = burgerIngredients.find((item) => item._id === id);
 
   useEffect(() => {
     // Отправляем экшен-функцию
@@ -38,12 +43,8 @@ function BurgerIngredients() {
   function handleOpenModalIngredient(item) {
     dispatch(openModalIngredientDetails());
     dispatch(returnTabIngredient(item));
+    // navigate('/ingredients/:id', { replace: false });
   }
-
-  const handleCloseModalIngredient = () => {
-    dispatch(closeModalIngredientDetails());
-    dispatch(deleteTabIngredient());
-  };
   //нашла все булки
   const buns = useMemo(
     () => burgerIngredients.filter((m) => m.type === bun),
@@ -68,7 +69,7 @@ function BurgerIngredients() {
       return item.scrollIntoView({ behavior: "smooth" });
     }
   };
-//реализация активных кнопок при скролле с помощью Intersection Observer Api
+  //реализация активных кнопок при скролле с помощью Intersection Observer Api
   const [oneRef, oneInView] = useInView({ threshold: 0.5 });
   const [twoRef, twoInView] = useInView({ threshold: 1 });
   const [threeRef, threeInView] = useInView({ threshold: 0.2 });
@@ -105,12 +106,17 @@ function BurgerIngredients() {
               ref={oneRef}
             >
               {buns.map((ingridients) => (
-                <li key={ingridients._id}>
+                <Link
+                  key={ingridients._id}
+                  className={`${ingredientsStyles.ingridient__link} `}
+                  to={`/ingredients/${ingridients._id}`}
+                  state={{ background: location }}
+                >
                   <IngridientItem
                     ingridient={ingridients}
                     onTab={handleOpenModalIngredient}
                   />
-                </li>
+                </Link>
               ))}
             </ul>
           </div>
@@ -122,12 +128,17 @@ function BurgerIngredients() {
               ref={twoRef}
             >
               {sauces.map((ingridients) => (
-                <li key={ingridients._id}>
+                <Link
+                  key={ingridients._id}
+                  to={`/ingredients/${ingridients._id}`}
+                  state={{ background: location }}
+                  className={`${ingredientsStyles.ingridient__link} `}
+                >
                   <IngridientItem
                     ingridient={ingridients}
                     onTab={handleOpenModalIngredient}
                   />
-                </li>
+                </Link>
               ))}
             </ul>
           </div>
@@ -138,24 +149,21 @@ function BurgerIngredients() {
               id="three"
             >
               {fillings.map((ingridients) => (
-                <li key={ingridients._id}>
+                <Link
+                  key={ingridients._id}
+                  to={`/ingredients/${ingridients._id}`}
+                  state={{ background: location }}
+                  className={`${ingredientsStyles.ingridient__link} `}
+                >
                   <IngridientItem
                     ingridient={ingridients}
                     onTab={handleOpenModalIngredient}
                   />
-                </li>
+                </Link>
               ))}
             </ul>
           </div>
         </div>
-        {isOpenIngredient && (
-          <Modal
-            onClose={handleCloseModalIngredient}
-            title="Детали ингредиента"
-          >
-            <IngredientDetails />
-          </Modal>
-        )}
       </>
     );
   }

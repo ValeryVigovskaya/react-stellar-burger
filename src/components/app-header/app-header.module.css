@@ -21,6 +21,7 @@
 
 .header_item {
   display: flex;
+  gap: 8px;
 }
 
 .header_item:last-of-type {
@@ -29,7 +30,12 @@
 
 .header_link {
   text-decoration: none;
-  color: var(--text-primary-color);
+  padding-top: 0;
+  padding-bottom: 0;
   display: flex;
   justify-items: center;
+}
+
+.header_link_active {
+  color: var(--text-primary-color);
 }

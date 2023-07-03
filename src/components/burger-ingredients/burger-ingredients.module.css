@@ -21,3 +21,9 @@
 .ingridient__container::-webkit-scrollbar-thumb {
   background-color: #8585ad;
 }
+
+.ingridient__link {
+  text-decoration: none;
+  color: var(--color-text);
+  background: var(--color-primary);
+}

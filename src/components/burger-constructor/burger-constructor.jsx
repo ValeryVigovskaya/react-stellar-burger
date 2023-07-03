@@ -21,13 +21,18 @@ import {
 } from "../../services/actions/actions";
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
   // Получаем метод dispatch
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   //состояния булок, ингредиентов и модального окна из редьюсера
   const { bun, ingredients } = useSelector(
     (state) => state.ingredientsConstructor
+  );
+  const { user } = useSelector(
+    (state) => state.userReducer
   );
   const { isOpenOrder } = useSelector((state) => state.orderDetails);
   //нашла только соусы и начинки
@@ -60,7 +65,11 @@ function BurgerConstructor() {
       isActive: monitor.canDrop() && monitor.isOver(),
     }),
   });
+  // добавила условие, если юзер нулевой, то кнопка перекидывает на логин
   const handleOpenModal = () => {
+    if (user === null) {
+      navigate("/login", { replace: true });
+    }
     dispatch(openModalOrderDetails());
     //тк булки отдельно создала новый массив на основе старых
     const allIngredients = [...orderIngridients, bun._id];

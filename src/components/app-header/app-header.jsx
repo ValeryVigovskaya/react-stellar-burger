@@ -14,7 +14,7 @@ function AppHeader() {
       : `${headerStyles.header_link} text_type_main-default  text_color_inactive pl-2`;
   const homeLink = useMatch("/");
   const profileLink = useMatch("/profile");
-  const orderFeedLink = useMatch("/orders");
+  const orderFeedLink = useMatch("/feed");
 
   return (
     <header className={headerStyles.header}>
@@ -34,7 +34,7 @@ function AppHeader() {
             </NavLink>
           </li>
           <li className={`${headerStyles.header_item} pl-5`}>
-            <NavLink to={{ pathname: "/orders" }} className={style}>
+            <NavLink to={{ pathname: "/feed" }} className={style}>
               {orderFeedLink ? (
                 <ListIcon type={"primary"} />
               ) : (

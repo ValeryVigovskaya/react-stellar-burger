@@ -9,7 +9,7 @@ import { useDrag } from "react-dnd";
 import { useMemo } from "react";
 
 const IngridientItem = ({ ingridient, onTab }) => {
-  const { bun, ingredients } = useSelector((state) => state.ingredientsConstructor);
+  const { bun, ingredients } = useSelector((state) => state.rootReducer.ingredientsConstructor);
   //const location = useLocation();
   // драгом обрабатывается забор ингредиента
   const [{ isDragging }, drag] = useDrag({

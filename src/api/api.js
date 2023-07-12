@@ -29,6 +29,10 @@ const postOrder = (ingredients) => {
   })
 }
 
+const getOrdersFetch = () => {
+  return request('orders/number')
+}
+
 const getUser = () => {
   return fetchWithRefresh('auth/user', {
     method: "GET",
@@ -141,4 +145,4 @@ const resetPass = ({ password, token }) => {
   })
 }
 
-export { getDataFetch, postOrder, postMail, getUser, login, logOut, postRegister, resetPass }
+export { getDataFetch, postOrder, postMail, getUser, login, logOut, postRegister, resetPass, getOrdersFetch }

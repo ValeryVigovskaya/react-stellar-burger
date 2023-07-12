@@ -1,4 +1,4 @@
-import { getDataFetch, postOrder, getUser, login, postMail, postRegister, logOut } from '../../api/api'
+import { getDataFetch, postOrder, getOrdersFetch } from '../../api/api'
 export const GET_DATA_REQUEST = 'GET_DATA_REQUEST';
 export const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS';
 export const GET_DATA_FAILED = 'GET_DATA_FAILED';
@@ -19,11 +19,18 @@ export const TAB_INGREDIENT_DELETE = 'TAB_INGREDIENT_DELETE';
 export const MODAL_INGREDIENT_DETAILS_OPEN = 'MODAL_INGREDIENT_DETAILS_OPEN';
 export const MODAL_INGREDIENT_DETAILS_CLOSE = 'MODAL_INGREDIENT_DETAILS_CLOSE';
 
-export const TAB_ORDER = 'TAB_ORDER';
 export const MODAL_ORDER_DETAILS_OPEN = 'MODAL_ORDER_DETAILS_OPEN';
 export const MODAL_ORDER_DETAILS_CLOSE = 'MODAL_ORDER_DETAILS_CLOSE';
 
 export const MOVE_INGREDIENT_ITEM = 'MOVE_INGREDIENT_ITEM';
+
+export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
+export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
+export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
+export const MODAL_ORDER_OPEN = 'MODAL_ORDER_OPEN';
+export const MODAL_ORDER_CLOSE = 'MODAL_ORDER_CLOSE';
+export const TAB_ORDER_NUMBER = 'TAB_ORDER_NUMBER';
+export const TAB_ORDER_DELETE = 'TAB_ORDER_DELETE';
 
 // Наш первый thunk
 export function getData() {
@@ -50,6 +57,36 @@ export function getData() {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({
           type: GET_DATA_FAILED
+        })
+      })
+  }
+}
+
+// Наш первый thunk
+export function getOrder() {
+  // Воспользуемся первым аргументом из усилителя redux-thunk — dispatch
+  return function (dispatch) {
+    dispatch({
+      type: GET_ORDER_REQUEST
+    })
+    // Запрашиваем данные у сервера
+    getOrdersFetch()
+      .then(res => {
+        if (res && res.success) {
+          dispatch({
+            type: GET_ORDER_SUCCESS,
+            orders: res.orders,
+          })
+        } else {
+          // Если произошла ошибка, отправляем соответствующий экшен
+          dispatch({
+            type: GET_ORDER_FAILED
+          })
+        }
+      }).catch(err => {
+        // Если сервер не вернул данных, также отправляем экшен об ошибке
+        dispatch({
+          type: GET_ORDER_FAILED
         })
       })
   }
@@ -152,5 +189,29 @@ export function moveIngredientItem(dragIndex, hoverIndex) {
     type: MOVE_INGREDIENT_ITEM,
         dragIndex: dragIndex,
         hoverIndex: hoverIndex,
+  }
+}
+
+export function openModalOrder() {
+  return {
+    type: MODAL_ORDER_OPEN
+  }
+}
+
+export function closeModalOrder() {
+  return {
+    type: MODAL_ORDER_OPEN
+  }
+}
+
+export function returnTabOrder(item) {
+  return {
+    type: TAB_ORDER_NUMBER, tabOrder: item
+  }
+}
+
+export function deleteTabOrder() {
+  return {
+    type: TAB_ORDER_DELETE
   }
 }

@@ -9,9 +9,10 @@ import { signOut, patchUserFetch } from "../services/actions/actions-user";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../utils/constants";
 import { useForm } from "../hooks/useForm";
+import ProfileOrdersPage from "../pages/profileOrders"
 
 function ProfilePage() {
-  const user = useSelector((state) => state.userReducer.user);
+  const user = useSelector((state) => state.rootReducer.userReducer.user);
   const { values, handleChange, setValues} = useForm({ name: user.name,
     email: user.email,
     password: "",});
@@ -84,7 +85,6 @@ function ProfilePage() {
             Выход
           </NavLink>
         </nav>
-        <Outlet />
         <p className="text text_type_main-default text_color_inactive pt-15">
           В этом разделе вы можете изменить свои персональные данные
         </p>
@@ -148,7 +148,7 @@ function ProfilePage() {
             </div>
           ) : null}
         </form>
-      ) : null}
+      ) : <Outlet />}
     </div>
   );
 }

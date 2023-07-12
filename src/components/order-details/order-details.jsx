@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 function OrderDetails() {
   const { orderRequest, orderFailed, currOrder } = useSelector(
-    (state) => state.orderDetails
+    (state) => state.rootReducer.orderDetails
   );
   if (orderFailed) {
     return <p>Произошла ошибка при получении данных</p>;

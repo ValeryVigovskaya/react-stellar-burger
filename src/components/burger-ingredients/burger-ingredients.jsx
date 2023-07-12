@@ -19,7 +19,7 @@ function BurgerIngredients() {
     burgerIngredients,
     burgerIngredientsRequest,
     burgerIngredientsFailed,
-  } = useSelector((state) => state.burgerIngredients);
+  } = useSelector((state) => state.rootReducer.burgerIngredients);
 
   // Получаем метод dispatch
   const dispatch = useDispatch();

@@ -29,12 +29,12 @@ function BurgerConstructor() {
   const navigate = useNavigate();
   //состояния булок, ингредиентов и модального окна из редьюсера
   const { bun, ingredients } = useSelector(
-    (state) => state.ingredientsConstructor
+    (state) => state.rootReducer.ingredientsConstructor
   );
   const { user } = useSelector(
-    (state) => state.userReducer
+    (state) => state.rootReducer.userReducer
   );
-  const { isOpenOrder } = useSelector((state) => state.orderDetails);
+  const { isOpenOrder } = useSelector((state) => state.rootReducer.orderDetails);
   //нашла только соусы и начинки
   const saucesAndMains = useMemo(
     () => ingredients.filter((m) => m.type !== "bun"),

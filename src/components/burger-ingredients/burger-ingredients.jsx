@@ -13,6 +13,7 @@ import {
 import { useInView } from "react-intersection-observer";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import Loader from "../loader/loader";
 
 function BurgerIngredients() {
   const {
@@ -23,11 +24,7 @@ function BurgerIngredients() {
 
   // Получаем метод dispatch
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
   const location = useLocation();
- // const id = useParams()
-
-  //const burgerIngredient = burgerIngredients.find((item) => item._id === id);
 
   useEffect(() => {
     // Отправляем экшен-функцию
@@ -77,7 +74,7 @@ function BurgerIngredients() {
   if (burgerIngredientsFailed) {
     return <p>Произошла ошибка при получении данных</p>;
   } else if (burgerIngredientsRequest) {
-    return <p>Загрузка...</p>;
+    return <Loader/>;
   } else {
     return (
       <>

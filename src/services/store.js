@@ -1,13 +1,12 @@
-import { applyMiddleware, createStore, compose } from 'redux';
 import { rootReducer } from './reducers/root-reducer';
 import {
-    connect as OrdersWsConnect,
-    disconnect as OrdersWsDisconnect,
-    wsOpen as OrdersWsOpen,
-    wsClose as OrdersWsClose,
-    wsMessage as OrdersWsMessage,
-    wsError as OrdersWsError,
-    wsConnecting as OrdersWsConnecting,
+    connect,
+    disconnect,
+    wsOpen,
+    wsClose,
+    wsMessage,
+    wsError,
+    wsConnecting,
     connectInProfile,
     disconnectInProfile,
     wsConnectingInProfile,
@@ -17,18 +16,16 @@ import {
     wsErrorInProfile
 } from './actions/actions-ws';
 import { socketMiddleware } from './middleware/socket-middleware';
-import thunk from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit';
-import { ordersReducer } from '../services/reducers/reducer-ws';
 
 const ordersMiddlware = socketMiddleware({
-    wsConnect: OrdersWsConnect,
-    wsDisconnect: OrdersWsDisconnect,
-    wsConnecting: OrdersWsConnecting,
-    onOpen: OrdersWsClose,
-    onMessage: OrdersWsMessage,
-    onClose: OrdersWsOpen,
-    onError: OrdersWsError,
+    wsConnect: connect,
+    wsDisconnect: disconnect,
+    wsConnecting: wsConnecting,
+    onOpen: wsOpen,
+    onMessage: wsMessage,
+    onClose: wsClose,
+    onError: wsError,
 });
 
 const ordersProfileMiddlware = socketMiddleware({

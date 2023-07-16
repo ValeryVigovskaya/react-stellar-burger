@@ -9,7 +9,6 @@ import { signOut, patchUserFetch } from "../services/actions/actions-user";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../utils/constants";
 import { useForm } from "../hooks/useForm";
-import ProfileOrdersPage from "../pages/profileOrders"
 
 function ProfilePage() {
   const user = useSelector((state) => state.rootReducer.userReducer.user);

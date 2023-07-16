@@ -4,9 +4,9 @@ import { Link, useMatch } from "react-router-dom";
 
 function OrderDetailsProfilePage() {
   return (
-    <>
+    <div className="mt-15">
       <OrderFromFeed />
-    </>
+    </div>
   );
 }
 

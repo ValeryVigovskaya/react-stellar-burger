@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import { burgerIngredientsReducer } from './burger-Ingredients-reducer';
 import { ingredientDetailsReducer } from './ingredient-details-reducer';
 import { ingredientsConstructorReducer } from './ingredients-constructor-reducer';

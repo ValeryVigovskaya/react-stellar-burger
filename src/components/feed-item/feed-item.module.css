@@ -17,18 +17,18 @@
 .list_title {
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 2;
+    grid-row-start: 3;
 }
 
 .list_ingredients {
-  max-width: 304px;
+  width: 304px;
   list-style-type: none;
   padding: 0;
-  display: flex;
+  display: grid;
   position: relative;
   height: 68px;
-    grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 5;
     grid-column-start: 1;
     grid-column-end: 2;
 }
@@ -78,9 +78,11 @@
 
 .number {
   z-index: 100;
-  position: absolute;
-  top: 20px;
-  right: -60px;
+  grid-row-start: 1;
+  grid-column-start: 2;
+  justify-self: flex-end;
+  align-self: center;
+  padding-right: 10px;
 }
 
 .list_item:nth-child(6)::before {
@@ -101,6 +103,21 @@
 .container_with_price {
     justify-self: end;
     align-self: center;
-    grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 5;
 }
+
+.color_green {
+  color: green
+}
+
+.color_purple {
+  color: purple
+}
+
+.color_white {
+  color: white
+}
+
+
+

@@ -55,7 +55,6 @@ function App() {
   //тк страница ингредиентов не отображалась, вызвала повторный диспатч получения
   useEffect(() => {
     dispatch(getData());
-    dispatch(getOrder());
     dispatch(userAuth());
   }, [dispatch]);
 
@@ -76,7 +75,8 @@ function App() {
           <Route
             path={ordersInProfile}
             element={<OnlyAuth component={<ProfileOrdersPage />} />}
-          />
+          > 
+          </Route>
         </Route>
         <Route
           path={profileOrderId}

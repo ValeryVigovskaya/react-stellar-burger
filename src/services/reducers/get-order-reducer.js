@@ -5,7 +5,7 @@ import {
 } from '../actions/actions'
 
 const initialState = {
-    orders: [],
+    order: [],
     ordersRequest: false,
     ordersFailed: false,
 }
@@ -22,7 +22,7 @@ export const getOrdersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ordersFailed: false,
-                orders: action.orders,
+                order: action.order,
                 ordersRequest: false
             };
         }

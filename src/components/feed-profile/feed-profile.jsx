@@ -7,18 +7,18 @@ import { useLocation, useNavigate, Link, Outlet } from "react-router-dom";
 import { ordersId } from "../../utils/constants";
 import { useMatch } from "react-router-dom";
 
-function FeedProfile({orders}) {
+function FeedProfile({ orders }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const onClickOnOrder = (item) => {
     dispatch(openModalOrder());
-    dispatch(returnTabOrder(item));
+    //dispatch(returnTabOrder(item));
   };
 
   return (
     <div className={`${feedProfile.container}`}>
       <ul className={`${feedProfile.list}`}>
-      {orders
+        {orders
           ? orders.map((order) => (
               <Link
                 key={order.number}
@@ -26,7 +26,7 @@ function FeedProfile({orders}) {
                 to={`/profile/orders/${order.number}`}
                 state={{ background: location }}
               >
-                <FeedItem order={order} onClick={onClickOnOrder}/>
+                <FeedItem order={order} onClick={onClickOnOrder} />
               </Link>
             ))
           : null}

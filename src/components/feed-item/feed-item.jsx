@@ -3,6 +3,9 @@ import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-component
 import { useSelector } from "react-redux";
 import TotalPrice from "../../components/total-price/total-price";
 import { useMemo } from "react";
+import { v4 as uuidv4 } from "uuid"; //тк вылезала ошибка, сделала уникальные ключи
+import { useMatch } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function FeedItem({ order, onClick }) {
   //вытащила массив ингредиентов бургера
@@ -13,37 +16,37 @@ function FeedItem({ order, onClick }) {
   function findIngredient(ingredient) {
     return burgerIngredients.find((item) => item._id === ingredient);
   }
- 
+  const profileOrdersLink = useMatch("/profile/orders");
   //массив ингредиетов в заказе по id
-  const burgerIngredientsImg = order.ingredients.map((item) =>
+  const burgerIngredientsImg = order?.ingredients.map((item) =>
     findIngredient(item)
-  ); 
-//фильтр соусов и начинок
-  const saucesAndMains = useMemo(
-    () => burgerIngredientsImg.filter((m) => m.type !== "bun"),
-    [burgerIngredientsImg]
-  );
-  
-//фильтр булок
-  const bun = useMemo(
-    () => burgerIngredientsImg.filter((m) => m.type === "bun"),
-    [burgerIngredientsImg]
   );
 
   //функция расчета стоимости
   const totalPrice = useMemo(() => {
-    const priceIngredients = saucesAndMains.reduce((acc, item) => {
-      return acc + item.price;
+    return burgerIngredientsImg?.reduce((acc, item) => {
+      return (
+        acc +
+        (item?.type !== "bun" ? item?.price : 0) +
+        (item?.type === "bun" ? 2 * item?.price : 0)
+      );
     }, 0);
-    return priceIngredients + bun.reduce((acc, item) => {
-      return acc + item.price * 2;
-    }, 0);
-  }, [saucesAndMains, bun]);
+  }, [burgerIngredientsImg]);
 
+  const statusColor = () => {
+    if (order.status === "done") {
+      return `${feedItem.order_number} text text_type_digits-default ${feedItem.color_green}`
+    } else if (order.status === "created") {
+      return `${feedItem.order_number} text text_type_digits-default ${feedItem.color_purple}`
+    }
+    else if (order.status === "pending") {
+      return `${feedItem.order_number} text text_type_digits-default ${feedItem.color_white}`
+    }
+  }
 
-  const dateFromServer = order.createdAt;
+  const dateFromServer = order.updatedAt;
   return (
-    <div className={`${feedItem.container}`} onClick={() => onClick(order)}>
+    <div className={`${feedItem.container}`} onClick={() => onClick()}>
       <div className={`${feedItem.string}`}>
         <p className={`${feedItem.order_number} text text_type_digits-default`}>
           #{order.number}
@@ -53,27 +56,34 @@ function FeedItem({ order, onClick }) {
           className="text text_type_main-default text_color_inactive"
         />
       </div>
+      {profileOrdersLink ? (
+        <p
+          className={statusColor()}
+        >
+          {order.status}
+        </p>
+      ) : null}
       <h3 className={`${feedItem.list_title} text text_type_main-medium`}>
         {order.name}
       </h3>
       <ul className={`${feedItem.list_ingredients}`}>
-        { burgerIngredientsImg.map((ingredient, i) => (
-          <li className={`${feedItem.list_item}`} key={i}>
+        {order.ingredients.map((ingredient) => (
+          <li className={`${feedItem.list_item}`} key={uuidv4()}>
             <img
-              src={ingredient.image_mobile}
+              src={findIngredient(ingredient)?.image_mobile}
               alt=""
               className={`${feedItem.img}`}
             />
           </li>
         ))}
-        {burgerIngredientsImg.length >= 6 ? (
+        {order.ingredients.length > 6 ? (
           <p className={`${feedItem.number} text text_type_digits-default`}>
-            +{burgerIngredientsImg.length - 6}
+            +{order.ingredients.length - 6}
           </p>
         ) : null}
       </ul>
       <div className={`${feedItem.container_with_price}`}>
-        <TotalPrice totalPrice={totalPrice} />
+        <TotalPrice totalPrice={totalPrice ? totalPrice : 0} />
       </div>
     </div>
   );

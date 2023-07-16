@@ -63,19 +63,19 @@ export function getData() {
 }
 
 // Наш первый thunk
-export function getOrder() {
+export function getOrder(number) {
   // Воспользуемся первым аргументом из усилителя redux-thunk — dispatch
   return function (dispatch) {
     dispatch({
       type: GET_ORDER_REQUEST
     })
     // Запрашиваем данные у сервера
-    getOrdersFetch()
+    getOrdersFetch(number)
       .then(res => {
         if (res && res.success) {
           dispatch({
             type: GET_ORDER_SUCCESS,
-            orders: res.orders,
+            order: res.orders[0] 
           })
         } else {
           // Если произошла ошибка, отправляем соответствующий экшен
@@ -201,17 +201,5 @@ export function openModalOrder() {
 export function closeModalOrder() {
   return {
     type: MODAL_ORDER_OPEN
-  }
-}
-
-export function returnTabOrder(item) {
-  return {
-    type: TAB_ORDER_NUMBER, tabOrder: item
-  }
-}
-
-export function deleteTabOrder() {
-  return {
-    type: TAB_ORDER_DELETE
   }
 }

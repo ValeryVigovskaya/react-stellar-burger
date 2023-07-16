@@ -3,6 +3,7 @@
   max-width: 640px;
   display: flex;
   flex-direction: column;
+  padding: 15px 60px 60px;
 }
 
 .list_order {
@@ -18,6 +19,19 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: 194px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.list_ingredients::-webkit-scrollbar {
+  padding-left: 24px;
+  width: 8px;
+  background-color: #2f2f37;
+}
+
+.list_ingredients::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
 }
 
 .order_number {
@@ -43,7 +57,7 @@
 }
 
 .item {
-  max-width: 100%;
+  width: 584px;
   display: flex;
   align-items: center;
 }
@@ -58,4 +72,21 @@
   background-clip: content-box, border-box;
   display: flex;
   justify-content: center;
+}
+
+.name {
+  padding-left: 16px;
+  width: 320px;
+}
+
+.color_green {
+  color: green
+}
+
+.color_purple {
+  color: purple
+}
+
+.color_white {
+  color: white
 }

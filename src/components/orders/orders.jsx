@@ -1,8 +1,5 @@
-import { useDispatch } from "react-redux";
 import ordersStyle from "./orders.module.css";
 import { useSelector } from "react-redux";
-
-//const GET_ORDERS_SERVER_URL = 'wss://norma.nomoreparties.space/orders/all'
 
 function Orders() {
   const orders = useSelector(
@@ -16,13 +13,18 @@ function Orders() {
   );
 
   const findOrdersByStatus = (arr) => {
-    return arr?.reduce((acc, curr) => {
-      curr.status === 'done' ? acc['done'] = [...acc['done'], curr] : acc['pending'] = [...acc['pending'], curr]
-      return acc;
-    }, { done: [], pending: [] })
-  }
-  const statusArray = findOrdersByStatus(orders)
-  const doneArray = statusArray?.done.slice(0, 50)
+    return arr?.reduce(
+      (acc, curr) => {
+        curr.status === "done"
+          ? (acc["done"] = [...acc["done"], curr])
+          : (acc["pending"] = [...acc["pending"], curr]);
+        return acc;
+      },
+      { done: [], pending: [] }
+    );
+  };
+
+  const statusArray = findOrdersByStatus(orders);
   return (
     <div className={`${ordersStyle.container}`}>
       <div className={`${ordersStyle.container_list}`}>
@@ -30,17 +32,15 @@ function Orders() {
           Готовы:
         </h3>
         <ul className={`${ordersStyle.list_numbers}`}>
-          {doneArray
-            ? doneArray.map((order, i) =>
-                order.status === "done" && (
-                  <li
-                    className={`${ordersStyle.number} text text_type_digits-default`}
-                    key={i}
-                  >
-                    {order.number}
-                  </li>
-                ) 
-              )
+          {statusArray
+            ? statusArray.done.map((order, i) => (
+                <li
+                  className={`${ordersStyle.number} text text_type_digits-default`}
+                  key={i}
+                >
+                  {order.number}
+                </li>
+              ))
             : null}
         </ul>
       </div>
@@ -50,13 +50,11 @@ function Orders() {
         </h3>
         <ul className={`${ordersStyle.list_numbers}`}>
           {statusArray
-            ? statusArray.pending.map((order, i) =>
-                order.status === "pending" && (
-                  <li className={`text text_type_digits-default`} key={i}>
-                    {order.number}
-                  </li>
-                ) 
-              )
+            ? statusArray.pending.map((order, i) => (
+                <li className={`text text_type_digits-default`} key={i}>
+                  {order.number}
+                </li>
+              ))
             : null}
         </ul>
       </div>

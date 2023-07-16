@@ -29,8 +29,8 @@ const postOrder = (ingredients) => {
   })
 }
 
-const getOrdersFetch = () => {
-  return request('orders/number')
+const getOrdersFetch = (number) => {
+  return request(`orders/${number}`)
 }
 
 const getUser = () => {

@@ -18,7 +18,7 @@ export const ingredientsConstructorReducer = (state = initialState, action) => {
     case ADD_INGREDIENTS_CONSTRUCTOR: {
       return {
         ...state,
-        ingredients: [...state.ingredients, { ...action.ingredients, key: action.key }],
+        ingredients: [...state.ingredients, { ...action.ingredients, keyUuid: action.keyUuid }],
       };
     }
     case ADD_INGREDIENTS_BUN: {
@@ -31,7 +31,7 @@ export const ingredientsConstructorReducer = (state = initialState, action) => {
     case DELETE_INGREDIENTS_CONSTRUCTOR: {
       return {
         ...state,
-        ingredients: [...state.ingredients].filter(item => item.key !== action.key)
+        ingredients: [...state.ingredients].filter(item => item.keyUuid !== action.keyUuid)
       }
     }
     case MOVE_INGREDIENT_ITEM: {

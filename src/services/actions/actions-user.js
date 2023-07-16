@@ -31,17 +31,10 @@ export function postRegisterFetch(array) {
     })
     postRegister(array)
       .then(res => {
-        if (res && res.success) {
           dispatch({
             type: POST_REGISTER_SUCCESS,
             user: setUser(res.user),
           })
-        } else {
-          // Если произошла ошибка, отправляем соответствующий экшен
-          dispatch({
-            type: POST_REGISTER_FAILED
-          })
-        }
       }).catch(err => {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({
@@ -77,18 +70,11 @@ export const patchUserFetch = (form) => {
     })
     patchUser(form)
       .then((res) => {
-        if (res && res.success) {
           dispatch({
             type: PATCH_USER_SUCCESS,
             user: res
           })
           dispatch(setUser(res.user));
-        } else {
-          // Если произошла ошибка, отправляем соответствующий экшен
-          dispatch({
-            type: PATCH_USER_FAILED
-          })
-        }
       }).catch(err => {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({
@@ -106,7 +92,6 @@ export const signIn = (form) => {
     })
     login(form)
       .then(res => {
-        if (res && res.success) {
           localStorage.setItem("accessToken", res.accessToken);
           localStorage.setItem("refreshToken", res.refreshToken);
           dispatch({
@@ -115,12 +100,6 @@ export const signIn = (form) => {
           })
           dispatch(setUser(res.user))
           dispatch(setAuthChecked(true));
-        } else {
-          // Если произошла ошибка, отправляем соответствующий экшен
-          dispatch({
-            type: POST_SIGNIN_FAILED
-          })
-        }
       }).catch(err => {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({
@@ -137,7 +116,6 @@ export const register = (form) => {
     })
     postRegister(form)
       .then(res => {
-        if (res && res.success) {
           localStorage.setItem("accessToken", res.accessToken);
           localStorage.setItem("refreshToken", res.refreshToken);
           dispatch({
@@ -145,12 +123,6 @@ export const register = (form) => {
             user: res,
           })
           dispatch(setUser(res.user))
-        } else {
-          // Если произошла ошибка, отправляем соответствующий экшен
-          dispatch({
-            type: POST_REGISTER_FAILED
-          })
-        }
       }).catch(err => {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({
@@ -184,19 +156,12 @@ export const signOut = () => {
     })
     logOut()
       .then(res => {
-        if (res && res.success) {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           dispatch({
             type: POST_SIGNOUT_SUCCESS,
           })
           dispatch(setUser(null))
-        } else {
-          // Если произошла ошибка, отправляем соответствующий экшен
-          dispatch({
-            type: POST_SIGNOUT_FAILED
-          })
-        }
       }).catch(err => {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({

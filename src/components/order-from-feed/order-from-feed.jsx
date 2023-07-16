@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect, useMemo } from "react";
-import { getData, getOrder } from "../../services/actions/actions";
+import { getOrder } from "../../services/actions/actions";
 import Loader from "../loader/loader";
 import TotalPrice from "../total-price/total-price";
 
@@ -27,7 +27,6 @@ function OrderFromFeed() {
   const orderNumber = Number(id);
   useEffect(() => {
     dispatch(getOrder(orderNumber));
-    dispatch(getData());
   }, [dispatch, orderNumber]);
 
   //отфильтровала массив ингредиентов, чтобы не отображались повторяющиеся
@@ -103,8 +102,8 @@ function OrderFromFeed() {
                 Состав:
                 <ul className={`${orderDetails.list_ingredients} pt-3`}>
                   {order
-                    ? unique.map((ingredient, i) => (
-                        <li className={`${orderDetails.item}`} key={i}>
+                    ? unique.map((ingredient, index) => (
+                        <li className={`${orderDetails.item}`} key={index}>
                           <div className={`${orderDetails.item_img}`}>
                             <img
                               src={findIngredient(ingredient)?.image_mobile}

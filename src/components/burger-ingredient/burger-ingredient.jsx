@@ -10,7 +10,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
 
 const BurgerIngredient = ({ ingridient, moveItemIngredient }) => {
-  const id = ingridient.key; //тк при добавлении игредиентов используется уникальный ключ, сделала переменную
+  const id = ingridient.keyUuid; //тк при добавлении игредиентов используется уникальный ключ, сделала переменную
   const { ingredients } = useSelector((state) => state.rootReducer.ingredientsConstructor);
 
   //тк индекс не вытаскивался использую indexOf
@@ -21,7 +21,7 @@ const BurgerIngredient = ({ ingridient, moveItemIngredient }) => {
   const onDelete = () => {
     return dispatch({
       type: DELETE_INGREDIENTS_CONSTRUCTOR,
-      key: ingridient.key,
+      keyUuid: ingridient.keyUuid,
     });
   };
 

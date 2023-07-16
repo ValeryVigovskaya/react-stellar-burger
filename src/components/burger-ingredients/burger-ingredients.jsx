@@ -26,11 +26,6 @@ function BurgerIngredients() {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  useEffect(() => {
-    // Отправляем экшен-функцию
-    dispatch(getData());
-  }, [dispatch]);
-
   const [current, setCurrent] = useState("one"); //при клике на таб скролл продолжает работать
 
   const bun = "bun";
@@ -40,7 +35,6 @@ function BurgerIngredients() {
   function handleOpenModalIngredient(item) {
     dispatch(openModalIngredientDetails());
     dispatch(returnTabIngredient(item));
-    // navigate('/ingredients/:id', { replace: false });
   }
   //нашла все булки
   const buns = useMemo(

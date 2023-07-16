@@ -40,15 +40,7 @@ function App() {
   const navigate = useNavigate();
   const background = location.state && location.state.background;
 
-  const closeModalIngredientDetails = () => {
-    navigate(-1);
-  };
-
-  const closeModalOrderDetails = () => {
-    navigate(-1);
-  };
-
-  const closeModalOrderDetailsProfile = () => {
+  const closeModal = () => {
     navigate(-1);
   };
 
@@ -103,7 +95,7 @@ function App() {
             path={ingredientsId}
             element={
               <Modal
-                onClose={closeModalIngredientDetails}
+                onClose={closeModal}
                 title="Детали ингредиента"
               >
                 <IngredientDetails />
@@ -113,7 +105,7 @@ function App() {
           <Route
             path={ordersId}
             element={
-              <Modal onClose={closeModalOrderDetails}>
+              <Modal onClose={closeModal}>
                 <OrderFromFeed />
               </Modal>
             }
@@ -121,7 +113,7 @@ function App() {
           <Route
             path={profileOrderId}
             element={
-              <Modal onClose={closeModalOrderDetailsProfile}>
+              <Modal onClose={closeModal}>
                 <OrderFromFeed />
               </Modal>
             }

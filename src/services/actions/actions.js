@@ -1,4 +1,5 @@
-import { getDataFetch, postOrder, getOrdersFetch } from '../../api/api'
+import { getDataFetch, postOrder, getOrdersFetch } from '../../api/api';
+import { v4 as uuidv4 } from "uuid";
 export const GET_DATA_REQUEST = 'GET_DATA_REQUEST';
 export const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS';
 export const GET_DATA_FAILED = 'GET_DATA_FAILED';
@@ -42,17 +43,10 @@ export function getData() {
     // Запрашиваем данные у сервера
     getDataFetch()
       .then(res => {
-        if (res && res.success) {
           dispatch({
             type: GET_DATA_SUCCESS,
             data: res.data,
           })
-        } else {
-          // Если произошла ошибка, отправляем соответствующий экшен
-          dispatch({
-            type: GET_DATA_FAILED
-          })
-        }
       }).catch(err => {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({
@@ -72,17 +66,10 @@ export function getOrder(number) {
     // Запрашиваем данные у сервера
     getOrdersFetch(number)
       .then(res => {
-        if (res && res.success) {
           dispatch({
             type: GET_ORDER_SUCCESS,
             order: res.orders[0] 
           })
-        } else {
-          // Если произошла ошибка, отправляем соответствующий экшен
-          dispatch({
-            type: GET_ORDER_FAILED
-          })
-        }
       }).catch(err => {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({
@@ -101,17 +88,10 @@ export function postOrderFetch(array) {
     // Запрашиваем данные у сервера
     postOrder(array)
       .then(res => {
-        if (res && res.success) {
           dispatch({
             type: POST_ORDER_SUCCESS,
             order: res,
           })
-        } else {
-          // Если произошла ошибка, отправляем соответствующий экшен
-          dispatch({
-            type: POST_ORDER_FAILED
-          })
-        }
       }).catch(err => {
         // Если сервер не вернул данных, также отправляем экшен об ошибке
         dispatch({
@@ -152,11 +132,11 @@ export function addIngredientsBun(item) {
   }
 }
 
-export function addIngredients(item, keyUuid) {
+export function addIngredients(item) {
   return {
     type: ADD_INGREDIENTS_CONSTRUCTOR,
     ingredients: item,
-    key: keyUuid
+    keyUuid: uuidv4()
   }
 }
 
@@ -174,7 +154,7 @@ export function closeModalOrderDetails() {
 
 export function clearConstructorIngredients() {
   return {
-    type: MODAL_ORDER_DETAILS_CLOSE
+    type: CLEAR_INGREDIENTS_CONSTRUCTOR
   }
 }
 

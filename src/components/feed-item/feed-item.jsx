@@ -67,8 +67,9 @@ function FeedItem({ order, onClick }) {
         {order.name}
       </h3>
       <ul className={`${feedItem.list_ingredients}`}>
-        {order.ingredients.map((ingredient) => (
-          <li className={`${feedItem.list_item}`} key={uuidv4()}>
+        {order.ingredients.map((ingredient, index) => (
+          //тк id есть повторяющиеся, сделала отрисовку по индексу
+          <li className={`${feedItem.list_item}`} key={index}>
             <img
               src={findIngredient(ingredient)?.image_mobile}
               alt=""

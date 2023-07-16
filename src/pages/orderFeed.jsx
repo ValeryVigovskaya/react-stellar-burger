@@ -7,8 +7,7 @@ import {
   disconnect as disconnectOrders,
 } from "../../src/services/actions/actions-ws";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo } from "react";
-import FeedItem from "../components/feed-item/feed-item";
+import { useEffect } from "react";
 import Loader from "../components/loader/loader";
 
 const GET_ORDERS_SERVER_URL = "wss://norma.nomoreparties.space/orders/all";

@@ -5,14 +5,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useMatch, useParams } from "react-router-dom";
-import { returnTabOrder } from "../../services/actions/actions";
+import { useParams } from "react-router-dom";
 import { useEffect, useMemo } from "react";
-import { ordersId, profileOrderId } from "../../utils/constants";
 import { getData, getOrder } from "../../services/actions/actions";
 import Loader from "../loader/loader";
 import TotalPrice from "../total-price/total-price";
-import { v4 as uuidv4 } from "uuid"; 
 
 function OrderFromFeed() {
   const dispatch = useDispatch();
@@ -26,6 +23,7 @@ function OrderFromFeed() {
   const { order, ordersFailed, ordersRequest } = useSelector(
     (state) => state.rootReducer.getOrders
   );
+  //приобразовала строку в номер
   const orderNumber = Number(id);
   useEffect(() => {
     dispatch(getOrder(orderNumber));
@@ -105,8 +103,8 @@ function OrderFromFeed() {
                 Состав:
                 <ul className={`${orderDetails.list_ingredients} pt-3`}>
                   {order
-                    ? unique.map((ingredient) => (
-                        <li className={`${orderDetails.item}`} key={uuidv4()}>
+                    ? unique.map((ingredient, i) => (
+                        <li className={`${orderDetails.item}`} key={i}>
                           <div className={`${orderDetails.item_img}`}>
                             <img
                               src={findIngredient(ingredient)?.image_mobile}

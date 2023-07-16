@@ -1,5 +1,4 @@
 import ReactLoading from "react-loading";
-import { list } from "./generic";
 import loader from "./loader.module.css"
 
 function Loader() {

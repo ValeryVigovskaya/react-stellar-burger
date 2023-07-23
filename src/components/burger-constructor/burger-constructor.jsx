@@ -20,7 +20,6 @@ import {
   clearConstructorBun,
 } from "../../services/actions/actions";
 import { useDrop } from "react-dnd";
-import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
@@ -29,12 +28,12 @@ function BurgerConstructor() {
   const navigate = useNavigate();
   //состояния булок, ингредиентов и модального окна из редьюсера
   const { bun, ingredients } = useSelector(
-    (state) => state.ingredientsConstructor
+    (state) => state.rootReducer.ingredientsConstructor
   );
   const { user } = useSelector(
-    (state) => state.userReducer
+    (state) => state.rootReducer.userReducer
   );
-  const { isOpenOrder } = useSelector((state) => state.orderDetails);
+  const { isOpenOrder } = useSelector((state) => state.rootReducer.orderDetails);
   //нашла только соусы и начинки
   const saucesAndMains = useMemo(
     () => ingredients.filter((m) => m.type !== "bun"),
@@ -48,11 +47,11 @@ function BurgerConstructor() {
   );
 
   //функция обработки экшеном в падении
-  function onDropHandler(item) {
+  function onDropHandler(item, keyUuid) {
     if (item.type === "bun") {
       return dispatch(addIngredientsBun(item));
     } else if (item.type !== "bun") {
-      return dispatch(addIngredients(item, uuidv4()));
+      return dispatch(addIngredients(item, keyUuid));
     }
   }
   //хук обработки падения
@@ -67,13 +66,14 @@ function BurgerConstructor() {
   });
   // добавила условие, если юзер нулевой, то кнопка перекидывает на логин
   const handleOpenModal = () => {
-    if (user === null) {
+    if (!user) {
       navigate("/login", { replace: true });
-    }
-    dispatch(openModalOrderDetails());
+    } else {
+      dispatch(openModalOrderDetails());
     //тк булки отдельно создала новый массив на основе старых
     const allIngredients = [...orderIngridients, bun._id];
     dispatch(postOrderFetch(allIngredients));
+    }
   };
 
   const handleCloseModal = () => {
@@ -120,8 +120,8 @@ function BurgerConstructor() {
           />
         )}
         <ul className={`${burgerStyles.ingridient__list} pt-5`}>
-          {ingredients.map((item, key) => (
-            <li key={key} className={`${burgerStyles.ingridient__item} pb-4`}>
+          {ingredients.map((item) => (
+            <li key={item.keyUuid} className={`${burgerStyles.ingridient__item} pb-4`}>
               <BurgerIngredient
                 ingridient={item}
                 moveItemIngredient={moveItemIngredient}

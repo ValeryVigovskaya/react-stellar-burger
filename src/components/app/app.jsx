@@ -17,6 +17,9 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import { getData } from "../../services/actions/actions";
 import ProfileOrdersPage from "../../pages/profileOrders";
+import OrderDetailsPage from "../../pages/orderDetails";
+import OrderFromFeed from "../order-from-feed/order-from-feed";
+import OrderDetailsProfilePage from "../../pages/orderDetailsProfile";
 import {
   home,
   ingredientsId,
@@ -27,6 +30,8 @@ import {
   forgotPass,
   resetPass,
   orders,
+  ordersId,
+  profileOrderId,
 } from "../../utils/constants";
 
 function App() {
@@ -35,7 +40,7 @@ function App() {
   const navigate = useNavigate();
   const background = location.state && location.state.background;
 
-  const closeModalIngredientDetails = () => {
+  const closeModal = () => {
     navigate(-1);
   };
 
@@ -62,8 +67,13 @@ function App() {
           <Route
             path={ordersInProfile}
             element={<OnlyAuth component={<ProfileOrdersPage />} />}
-          />
+          > 
+          </Route>
         </Route>
+        <Route
+          path={profileOrderId}
+          element={<OnlyAuth component={<OrderDetailsProfilePage />} />}
+        />
         <Route
           path={register}
           element={<OnlyUnAuth component={<RegisterPage />} />}
@@ -77,6 +87,7 @@ function App() {
           element={<OnlyUnAuth component={<ResetPass />} />}
         />
         <Route path={orders} element={<OrderFeedPage />} />
+        <Route path={ordersId} element={<OrderDetailsPage />} />
       </Routes>
       {background && (
         <Routes>
@@ -84,11 +95,26 @@ function App() {
             path={ingredientsId}
             element={
               <Modal
-                onClose={closeModalIngredientDetails}
+                onClose={closeModal}
                 title="Детали ингредиента"
-                s
               >
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path={ordersId}
+            element={
+              <Modal onClose={closeModal}>
+                <OrderFromFeed />
+              </Modal>
+            }
+          />
+          <Route
+            path={profileOrderId}
+            element={
+              <Modal onClose={closeModal}>
+                <OrderFromFeed />
               </Modal>
             }
           />

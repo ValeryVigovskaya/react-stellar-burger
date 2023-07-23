@@ -1,15 +1,16 @@
 import orderDetails from "./order-details.module.css";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
+import Loader from "../loader/loader";
 
 function OrderDetails() {
   const { orderRequest, orderFailed, currOrder } = useSelector(
-    (state) => state.orderDetails
+    (state) => state.rootReducer.orderDetails
   );
   if (orderFailed) {
     return <p>Произошла ошибка при получении данных</p>;
   } else if (orderRequest) {
-    return <p>Загрузка...</p>;
+    return <Loader/>;
   } else {
     return (
       <ul className={`${orderDetails.container} m-4 pb-15`}>

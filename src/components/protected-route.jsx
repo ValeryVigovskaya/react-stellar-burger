@@ -3,8 +3,8 @@ import { Navigate, useLocation } from "react-router-dom";
 import { home } from "../utils/constants";
 
 const Protected = ({ onlyUnAuth = false, component }) => {
-  const isAuthChecked = useSelector((state) => state.userReducer.isAuthChecked);
-  const user = useSelector((state) => state.userReducer.user);
+  const isAuthChecked = useSelector((state) => state.rootReducer.userReducer.isAuthChecked);
+  const user = useSelector((state) => state.rootReducer.userReducer.user);
   const location = useLocation();
 
   if (!isAuthChecked) {

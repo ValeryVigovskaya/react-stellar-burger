@@ -2,29 +2,26 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/app/app";
-import { compose, createStore, applyMiddleware } from 'redux';
+//import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
-import { rootReducer } from './services/reducers/root-reducer';
-import thunk from 'redux-thunk';
+//import { rootReducer } from './services/reducers/root-reducer';
+//import thunk from 'redux-thunk';
 import { BrowserRouter as Router} from 'react-router-dom';
+//import { socketMiddleware } from '../src/services/middleware/socket-middleware';
+//import { connect, disconnect, wsClose, wsConnecting, wsError, wsMessage, wsOpen } from '../src/services/actions/actions-ws';
+import { initStore } from './services/store';
 
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+//const store = initStore();
 
-const store = createStore(rootReducer, enhancer);
+//const store = createStore(rootReducer, enhancer);
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-    <Provider store={store}>
-    
+    <Provider store={initStore}>  
       <App />
-      
     </Provider></Router>
   </React.StrictMode>,
   document.getElementById("root")

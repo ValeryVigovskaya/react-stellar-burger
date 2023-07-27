@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "./static/css/main.fe8af782.css",
-    "main.js": "./static/js/main.c751be7f.js",
-    "static/js/787.438bf4e7.chunk.js": "./static/js/787.438bf4e7.chunk.js",
-    "static/media/JetBrainsMono-Bold.woff": "./static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
-    "static/media/JetBrainsMono-Regular.woff": "./static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
-    "static/media/JetBrainsMono-Bold.woff2": "./static/media/JetBrainsMono-Bold.c232d532ea5a5189a278.woff2",
-    "static/media/JetBrainsMono-Regular.woff2": "./static/media/JetBrainsMono-Regular.b60380891bcf2eb241ca.woff2",
-    "static/media/iceland.woff": "./static/media/iceland.77ad7fc2baffd9305538.woff",
-    "static/media/iceland.woff2": "./static/media/iceland.4ae67a017a5ff82bbbb7.woff2",
-    "index.html": "./index.html",
-    "main.fe8af782.css.map": "./static/css/main.fe8af782.css.map",
-    "main.c751be7f.js.map": "./static/js/main.c751be7f.js.map",
-    "787.438bf4e7.chunk.js.map": "./static/js/787.438bf4e7.chunk.js.map"
+    "main.css": "/react-gh-pages/static/css/main.d0521993.css",
+    "main.js": "/react-gh-pages/static/js/main.cdd4c40e.js",
+    "static/js/787.438bf4e7.chunk.js": "/react-gh-pages/static/js/787.438bf4e7.chunk.js",
+    "static/media/JetBrainsMono-Bold.woff": "/react-gh-pages/static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
+    "static/media/JetBrainsMono-Regular.woff": "/react-gh-pages/static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
+    "static/media/JetBrainsMono-Bold.woff2": "/react-gh-pages/static/media/JetBrainsMono-Bold.c232d532ea5a5189a278.woff2",
+    "static/media/JetBrainsMono-Regular.woff2": "/react-gh-pages/static/media/JetBrainsMono-Regular.b60380891bcf2eb241ca.woff2",
+    "static/media/iceland.woff": "/react-gh-pages/static/media/iceland.77ad7fc2baffd9305538.woff",
+    "static/media/iceland.woff2": "/react-gh-pages/static/media/iceland.4ae67a017a5ff82bbbb7.woff2",
+    "index.html": "/react-gh-pages/index.html",
+    "main.d0521993.css.map": "/react-gh-pages/static/css/main.d0521993.css.map",
+    "main.cdd4c40e.js.map": "/react-gh-pages/static/js/main.cdd4c40e.js.map",
+    "787.438bf4e7.chunk.js.map": "/react-gh-pages/static/js/787.438bf4e7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fe8af782.css",
-    "static/js/main.c751be7f.js"
+    "static/css/main.d0521993.css",
+    "static/js/main.cdd4c40e.js"
   ]
 }

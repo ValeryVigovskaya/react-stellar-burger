@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 //import { rootReducer } from './services/reducers/root-reducer';
 //import thunk from 'redux-thunk';
-import { BrowserRouter as Router} from 'react-router-dom';
+import { HashRouter as Router} from 'react-router-dom';
 //import { socketMiddleware } from '../src/services/middleware/socket-middleware';
 //import { connect, disconnect, wsClose, wsConnecting, wsError, wsMessage, wsOpen } from '../src/services/actions/actions-ws';
 import { initStore } from './services/store';

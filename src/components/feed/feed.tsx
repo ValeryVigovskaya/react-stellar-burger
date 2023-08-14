@@ -4,12 +4,13 @@ import { openModalOrder } from "../../services/actions/modal-order-actions";
 import { useLocation, Link } from "react-router-dom";
 import { useAppDispatch } from '../../services/index';
 import { IOrder } from "../../utils/types";
+import { FC } from "react";
 
 interface IFeedProps {
   orders: IOrder[];
 }
 
-function Feed({ orders }: IFeedProps) {
+const Feed: FC<IFeedProps> = ({ orders }) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const onClickOnOrder = () => {

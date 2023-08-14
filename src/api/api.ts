@@ -1,9 +1,9 @@
-import { IOrder, TResponseBody, IIngredient, IUser, TOrder} from "../utils/types";
+import { IOrder, TResponseBody, IIngredient, IUser, TOrder, IPatchUserObj, IPostRegisterUserObj, IPostResetPassObj, THeaders} from "../utils/types";
 
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 
-function request(endpoint: string, options: object = {}){
+const request = <T>(endpoint: RequestInfo | URL, options?: RequestInit): Promise<T> => {
   return fetch(`${BASE_URL}${endpoint}`, options)
     .then(checkResponse)
 }
@@ -23,8 +23,8 @@ const postOrder = (ingredients: string[]): Promise<TResponseBody<'order', Readon
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      authorization: localStorage.getItem("accessToken"),
-    },
+      Authorization: localStorage.getItem("accessToken"),
+    } as HeadersInit,
     body: JSON.stringify({
       ingredients,
     }),
@@ -41,21 +41,17 @@ const getUser = (): Promise<TResponseBody<'user', Readonly<IUser>>> => {
     headers: {
       authorization: localStorage.getItem("accessToken"),
       "Content-Type": "application/json;charset=utf-8",
-    },
+    } as (HeadersInit | undefined) & THeaders,
   });
 };
 
-export const patchUser = (obj: {
-  name: string;
-  email: string;
-  password: string;
-}) => {
+export const patchUser = (obj: IPatchUserObj) => {
   return fetchWithRefresh("auth/user", {
     method: "PATCH",
     headers: {
-      "Content-Type": "application/json;charset=utf-8",
       authorization: localStorage.getItem("accessToken"),
-    },
+      "Content-Type": "application/json;charset=utf-8",
+    } as (HeadersInit | undefined) & THeaders,
     body: JSON.stringify(obj),
   });
 };
@@ -74,7 +70,7 @@ export const refreshToken = (): Promise<TResponseBody> => {
 
 export const fetchWithRefresh = async (
   endpoint: string,
-  options: any
+  options: RequestInit & { headers: { authorization: string | null, "Content-Type": string } }
 ): Promise<TResponseBody<'user', Readonly<IUser>>> => {
   try {
     const res = await fetch(`${BASE_URL}${endpoint}`, options);
@@ -110,18 +106,14 @@ const logOut = (): Promise<TResponseBody> => {
     headers: {
       "Content-Type": "application/json",
       authorization: localStorage.getItem("accessToken"),
-    },
+    } as HeadersInit,
     body: JSON.stringify({
       token: localStorage.getItem("refreshToken"),
     }),
   });
 };
 
-const postRegister = (obj: {
-  email: string;
-  password: string;
-  name: string;
-}): Promise<TResponseBody<'register', Readonly<IUser>>> => {
+const postRegister = (obj: IPostRegisterUserObj): Promise<TResponseBody<'register', Readonly<IUser>>> => {
   return request("auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -139,7 +131,7 @@ const postMail = (email: string): Promise<TResponseBody<'pass_reset', string>> =
   });
 };
 
-const resetPass = (obj: { password: string; token: string }): Promise<TResponseBody<'reset_password', string>> => {
+const resetPass = (obj: IPostResetPassObj): Promise<TResponseBody<'reset_password', string>> => {
   return request("password-reset/reset", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

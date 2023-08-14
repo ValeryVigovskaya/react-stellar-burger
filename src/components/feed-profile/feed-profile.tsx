@@ -3,13 +3,14 @@ import FeedItem from "../feed-item/feed-item";
 import { useDispatch } from "react-redux";
 import { openModalOrder } from "../../services/actions/modal-order-actions";
 import { useLocation, Link} from "react-router-dom";
-import {IOrder} from "../../utils/types"
+import {IOrder} from "../../utils/types";
+import { FC } from "react";
 
 interface IFeedProfileProps {
   orders: IOrder[];
 }
 
-export const FeedProfile= ({ orders }: IFeedProfileProps) => {
+export const FeedProfile: FC<IFeedProfileProps>= ({ orders }) => {
   const dispatch = useDispatch();
   const location = useLocation();
 

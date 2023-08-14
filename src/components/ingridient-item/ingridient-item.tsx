@@ -4,7 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingridientItem from "./ingridient-item.module.css";
 import { useDrag } from "react-dnd";
-import { useMemo } from "react";
+import { useMemo, FC } from "react";
 import { IIngredient } from "../../utils/types.js";
 import { useAppSelector } from '../../services/index';
 
@@ -13,7 +13,7 @@ interface Props {
   onTab: (item: IIngredient) => void;
 }
 
-const IngridientItem = ({ ingridient, onTab }: Props) => {
+const IngridientItem: FC<Props> = ({ ingridient, onTab }) => {
   const { bun, ingredients } = useAppSelector((state) => state.rootReducer.ingredientsConstructor);
   //const location = useLocation();
   // драгом обрабатывается забор ингредиента

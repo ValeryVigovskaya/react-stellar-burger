@@ -16,7 +16,7 @@ interface IKeyboardEvent {
   key: string;
 }
 
-export const Modal = ({ children, onClose, title }: IModalProps) => {
+export const Modal: FC<IModalProps> = ({ children, onClose, title }) => {
 
   useEffect(() => {
     const closeByEscape = (event: IKeyboardEvent) => {

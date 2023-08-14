@@ -6,7 +6,7 @@ import burgerIngredient from "./burger-ingredient.module.css";
 import { onDelete } from "../../services/actions/ingredients-constructor-actions";
 import { useDispatch } from "react-redux";
 import { DropTargetOptions, useDrag, useDrop } from "react-dnd";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { IIngredient } from "../../utils/types";
 import { useAppSelector } from '../../services/index';
 
@@ -15,7 +15,7 @@ interface IBurgerIngredientProps {
   moveItemIngredient: (dragIndex: number, hoverIndex: number) => void;
 }
 
-const BurgerIngredient = ({ ingridient, moveItemIngredient }: IBurgerIngredientProps) => {
+const BurgerIngredient: FC<IBurgerIngredientProps> = ({ ingridient, moveItemIngredient }) => {
   const id = ingridient.keyUuid; //тк при добавлении игредиентов используется уникальный ключ, сделала переменную
   const { ingredients } = useAppSelector((state) => state.rootReducer.ingredientsConstructor);
 

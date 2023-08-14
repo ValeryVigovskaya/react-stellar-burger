@@ -1,7 +1,7 @@
 import feedItem from "./feed-item.module.css";
 import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import {TotalPrice} from "../total-price/total-price";
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useMatch } from "react-router-dom";
 import {IOrder, IIngredient} from "../../utils/types";
 import { useAppSelector } from '../../services/index'
@@ -11,7 +11,7 @@ interface IFeedItemProps {
   onClick:() => void;
 }
 
-function FeedItem({ order, onClick }: IFeedItemProps) {
+const FeedItem: FC<IFeedItemProps> = ({ order, onClick }) => {
   //вытащила массив ингредиентов бургера
   const { burgerIngredients } = useAppSelector(
     (state) => state.rootReducer.burgerIngredients

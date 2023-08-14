@@ -1,4 +1,4 @@
-type TStatuses = 'created' | 'pending' | 'done'
+type TStatuses = "created" | "pending" | "done";
 
 export interface IIngredient {
   _id: string;
@@ -14,7 +14,7 @@ export interface IIngredient {
   image_large: string;
   __v: number;
   keyUuid: string;
-  index: number
+  index: number;
 }
 
 export interface IOrder {
@@ -35,10 +35,10 @@ export interface IOrder {
 }
 
 export interface IOrders {
-  success: boolean
+  success: boolean;
   orders: IOrder[];
   total: number;
-	totalToday: number;
+  totalToday: number;
 }
 
 export interface IUser {
@@ -46,7 +46,6 @@ export interface IUser {
   email: string;
   password: string;
 }
-
 
 export interface IUserLogin {
   email: string;
@@ -57,12 +56,12 @@ export type TOrder = {
   number: number;
   name: string;
   success: boolean;
-}
+};
 
 export type TOrderDetails = {
   orders: IOrder[];
   success: boolean;
-}
+};
 
 export type TResponseBody<TDataKey extends string = "", TDataType = {}> = {
   [key in TDataKey]: TDataType;
@@ -73,3 +72,27 @@ export type TResponseBody<TDataKey extends string = "", TDataType = {}> = {
   refreshToken: string;
   accessToken: string;
 };
+
+export type THeaders = {
+  authorization: string | null;
+  "Content-Type": string;
+};
+
+export interface IPatchUserObj {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface IPostRegisterUserObj {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface IPostResetPassObj {
+  password: string;
+  token: string;
+}
+
+

@@ -1,7 +1,7 @@
 import { useState, SyntheticEvent} from "react";
 
 
-export function useForm<T>(inputValues:T) {
+export function useForm<T extends {[key: string]: string | number}>(inputValues:T) {
     const [values, setValues] = useState<T>(inputValues);
   
     const handleChange = (event: SyntheticEvent<HTMLInputElement>) => {
